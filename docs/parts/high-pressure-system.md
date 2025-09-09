@@ -10,7 +10,7 @@
     - Suitable for continuous use, or intermittent use with an accumulator.
     - Check valve.
     - Pressure switch.
-- **Alternatives:**
+- **Products:**
     - https://frenna.se/product.html/membranpump-10-l/m-24vdc-bypass-7-bar-pentair-shurflo-8015-114-111
     - https://frenna.se/product.html/membranpump-54-lpm-230-vac-tryckvakt-69-bar-shurflo-8090-802-278
     - **https://frenna.se/product.html/membranpump-54-lpm-230vac-tryckvakt-69-bar-ce-nsf-shurflo-8090-902-248**
@@ -23,6 +23,8 @@
 - **Function:** Atomize water into fine droplets (around 45–55 µm).
 - **Requirements:**
   - Stainless steel or ceramic for durability and ease of maintenance.
+- **Products:**
+    - https://dusk.se/bevattning-befuktning/kopplingar-slang-och-munstycken
 
 ## Pressure Tank (Accumulator)
 - **Function:** Stabilizes pressure and reduces pump cycling.
@@ -36,7 +38,7 @@
     - Food-safe materials: PU, PVC, PEX, PA (preferred).
     - Preferably black to prevent algae growth.
     - Push-to-connect fittings recommended.
-- **Alternatives:**
+- **Products:**
     - https://www.ahlsell.se/products/forbrukningsvaror/slangar-och-tillbehor/tryckluftslangar/182246-bc26f08d
     - https://www.ahlsell.se/products/verktyg--maskiner/pneumatik/kopplingar-slang-och-kablage/511581
     - https://www.ahlsell.se/category/verktyg--maskiner/pneumatik/kopplingar-slang-och-kablage
