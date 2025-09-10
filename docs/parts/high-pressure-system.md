@@ -4,7 +4,6 @@
 - **Function:** Maintains water pressure (typically 80–120 psi).
 - **Requirements:**
     - At least 100 psi operating pressure.
-    - Flow rate of 2 LPM (litres per minute).
     - Preferably a diaphragm pump.
     - Food-safe materials: EPDM, Santoprene, Viton, PTFE.
     - Suitable for continuous use, or intermittent use with an accumulator.
@@ -39,9 +38,9 @@
 ## Tubing and Fittings
 - **Function:** Distribute water from the pump to the nozzles, must be pressure-safe.
 - **Requirements:**
-    - Food-safe materials: PU, PVC, PEX, PA (preferred).
+    - Food-safe materials: PU, PEX, PA (preferred).
     - Preferably black to prevent algae growth.
-    - Push-to-connect fittings recommended.
+    - Push-to-connect fittings.
 - **Products:**
     - https://www.ahlsell.se/products/forbrukningsvaror/slangar-och-tillbehor/tryckluftslangar/182246-bc26f08d
     - https://www.ahlsell.se/products/verktyg--maskiner/pneumatik/kopplingar-slang-och-kablage/511581
@@ -49,6 +48,7 @@
     - **https://www.ahlsell.se/products/verktyg--maskiner/pneumatik/slang-ror-och-kopplingar/319549**
     - https://www.ahlsell.se/products/verktyg--maskiner/pneumatik/kopplingar-slang-och-kablage/428740
     - https://www.ahlsell.se/products/verktyg--maskiner/pneumatik/kopplingar-slang-och-kablage/676700
+    - **https://www.mrs-shop.com/druckschlauch-6mm-schwarz-27bar**
 
 ## Reservoir
 - **Function:** Stores the nutrient solution.
@@ -63,4 +63,4 @@
 
 ## General System Requirements
 - All (or most) parts in contact with water must use food-safe materials.
-- Maximum system pressure should be above 150 psi for a safety margin.
+- Maximum system pressure should be above 150 psi (10 bar) for a safety margin.
