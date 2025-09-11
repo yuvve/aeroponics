@@ -24,9 +24,7 @@
   - Stainless steel or ceramic for durability and ease of maintenance.
 - **Products:**
     - https://dusk.se/bevattning-befuktning/kopplingar-slang-och-munstycken
-    - https://www.mrs-shop.com/nebelduesen/-micro-line-quick (Deutchland)
-    - https://www.mrs-shop.com/beregnungsanlagen-aeroponic?p=1&o=4&n=24&cf=110
-    - **https://www.mrs-shop.com/micro-nebelduese-schnellverschraubung?number=MRS-00148.84260445722387**    
+    - **https://www.mrs-shop.com/micro-nebelduese-schnellverschraubung**    
         - [Data sheet](https://www.mrs-shop.com/media/pdf/33/56/12/micro-nebelduesen-uebersicht.pdf)    
 
 ## Pressure Tank (Accumulator)
