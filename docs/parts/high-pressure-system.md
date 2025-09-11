@@ -51,10 +51,21 @@
   - Preferably black to prevent algae growth.
 
 ## Solenoid Valve
-- **Function:** Controls the flow of water to the nozzles.
+- **Function:** Controls the flow of water to the nozzles and handles emptin of the tank for new water flow.
 - **Requirements:**
   - Reasonable response time.
 
+- **Alternatives:**
+  -  For disposal and mist (3 valve)
+    - https://se.rs-online.com/web/c/plumbing-pipeline/valves-taps/solenoid-valves/?selectedNavigation=attributes.Number_of_Ports=3
+    - https://se.rs-online.com/web/p/solenoid-valves/1904145
+    - https://se.rs-online.com/web/p/solhttps://se.rs-online.com/web/p/solenoid-valves/1904146enoid-valves/1904146
+    - https://se.rs-online.com/web/p/solenoid-valves/1904144
+    - https://se.rs-online.com/web/p/solenoid-valves/7013378
+  -  For single control of mist and water input (2 valve)
+    - 
+
+    
 ## General System Requirements
 - All (or most) parts in contact with water must use food-safe materials.
 - Maximum system pressure should be above 150 psi for a safety margin.
