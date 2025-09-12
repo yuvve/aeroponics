@@ -10,13 +10,11 @@
     - Check valve.
     - Pressure switch.
 - **Products:**
-    - https://www.mrs-shop.com/m.r.s.-whisper-powerpump-professional-xl-360-lph
-    - https://frenna.se/product.html/membranpump-10-l/m-24vdc-bypass-7-bar-pentair-shurflo-8015-114-111
-    - https://frenna.se/product.html/membranpump-54-lpm-230-vac-tryckvakt-69-bar-shurflo-8090-802-278
-    - https://frenna.se/product.html/membranpump-54-lpm-230vac-tryckvakt-69-bar-ce-nsf-shurflo-8090-902-248
-    - https://frenna.se/product.html/membranpump-61-lpm-24vdc-tryckvakt-69-bar-ce-nsf-shurflo-8000-853-238
     - https://frenna.se/product.html/membranpump-63-l/m-12vdc-tryckvakt-103-bar-nsf-shurflo-8030-813-239
-    - https://frenna.se/product.html/membranpump-59-l/m-230vac-bypass-69-bar-nsf-shurflo-8095-902-260
+    - https://frenna.se/product.html/membranpump-61-lpm-24vdc-tryckvakt-69-bar-ce-nsf-shurflo-8000-853-238
+    - https://frenna.se/product.html/membranpump-54-lpm-230vac-tryckvakt-69-bar-ce-nsf-shurflo-8090-902-248
+    - https://frenna.se/product.html/membranpump-54-lpm-230-vac-tryckvakt-69-bar-shurflo-8090-802-278
+
 
 ## Misting Nozzles
 - **Function:** Atomize water into fine droplets (around 45–55 µm).
