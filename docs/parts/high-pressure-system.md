@@ -38,16 +38,17 @@
     - Food-safe materials: PU, PE, PA (preferred).
     - Preferably black to prevent algae growth.
 - **Products:**
-    - [For nozzle distribution](https://www.mrs-shop.com/druckschlauch-6mm-schwarz-27bar)
-    - [For mains (pump, tank)](https://www.mrs-shop.com/druckschlauch-8mm-blau-12bar)
+    - [For nozzle distribution, 6 mm](https://www.mrs-shop.com/druckschlauch-6mm-schwarz-27bar)
+    - [For mains (pump, tank), 8 mm](https://www.mrs-shop.com/druckschlauch-8mm-blau-12bar)
     - Fittings:
         - [Coarse filter (suction side)](https://www.mrs-shop.com/vorfilter-fuer-beregnungsanlagen-150my-siebfilter)
         - [Pump to 8mm hose (suction and pressure side)](https://www.mrs-shop.com/steckverschraubung-hochdruck-3/8-npt?number=MRS-00140)
         - [T connector to pressure tank](https://www.mrs-shop.com/t-schnellverschraubung-mit-ueberwurfmutter-8/6mm)
-        - Need to find R20 or G3/4 inch connector to 8 mm hose.
+        - [Pressure tank to hose (might need alternative)](https://www.mrs-shop.com/steckanschluss-innengewinde-6-8-12-mm?number=MRS-10254.14260215332495)
         - [Fine filter (pressure side after pressure tank)](https://www.mrs-shop.com/filtersystem-fs-sd18-fuer-beregnungsanlagen)
         - [Supply distributor, manometer](https://www.mrs-shop.com/dreifach-schlauchverteiler-mit-manometeranzeige)
         - [Nozzle distributor (per level)](https://www.mrs-shop.com/dreifach-durchgangsverteiler-2x-6mm-auf-3x-6mm)
+            - [Plug](https://www.mrs-shop.com/verschlussstecker-fuer-steckverschraubungen)  
             - [Or X connector](https://www.mrs-shop.com/kreuzverbinder-schnellsteckverbinder-6-mm)
             - [Or 3 way with included nozzles](https://www.mrs-shop.com/flexi-nebelduese-3fach?number=MRS-10272.44260215332662)
     - [Hose scissor](https://www.mrs-shop.com/rohrschere-6-20mm-kunststoffrohr)
