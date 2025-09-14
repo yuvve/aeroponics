@@ -10,11 +10,8 @@
     - Check valve.
     - Pressure switch.
 - **Products:**
-    - https://frenna.se/product.html/membranpump-63-l/m-12vdc-tryckvakt-103-bar-nsf-shurflo-8030-813-239
     - https://frenna.se/product.html/membranpump-61-lpm-24vdc-tryckvakt-69-bar-ce-nsf-shurflo-8000-853-238
-    - https://frenna.se/product.html/membranpump-54-lpm-230vac-tryckvakt-69-bar-ce-nsf-shurflo-8090-902-248
-    - https://frenna.se/product.html/membranpump-54-lpm-230-vac-tryckvakt-69-bar-shurflo-8090-802-278
-
+        - [Data sheet](https://www.pumpagents.com/pdf/ShurfloPumps/8000-853-238.pdf)
 
 ## Misting Nozzles
 - **Function:** Atomize water into fine droplets (around 45–55 µm).
@@ -23,9 +20,8 @@
 - **Products:**
     - **https://www.mrs-shop.com/micro-nebelduese-schnellverschraubung**    
         - [Data sheet](https://www.mrs-shop.com/media/pdf/33/56/12/micro-nebelduesen-uebersicht.pdf)
-        - https://www.reddit.com/r/Hydroponics/comments/1i9yfze/mist_nozzle_and_pump_selection_chart_for/
+        - [Size chart](https://www.reddit.com/r/Hydroponics/comments/1i9yfze/mist_nozzle_and_pump_selection_chart_for/)
         - 0.5 mm opening: approx. 100ml/min, 95 degrees, 30-45 um.
-        - https://www.mrs-shop.com/m.r.s.-anti-tropf-duese-duesenkopf-eco-0-5-mm-950
 
 ## Pressure Tank (Accumulator)
 - **Function:** Stabilizes pressure and reduces pump cycling.
@@ -37,17 +33,25 @@
 
 
 ## Tubing and Fittings
-- **Function:** Distribute water from the pump to the nozzles, must be pressure-safe.
+- **Function:** Distribute water from the pump to the nozzles.
 - **Requirements:**
-    - Food-safe materials: PU, PEX, PA (preferred).
+    - Food-safe materials: PU, PE, PA (preferred).
     - Preferably black to prevent algae growth.
-    - Push-to-connect fittings.
 - **Products:**
-    - **https://www.mrs-shop.com/druckschlauch-6mm-schwarz-27bar**
-    - Tubing design?:
-        - 3 way distributor on top
-        - 4 way cross connection at each level
-
+    - [For nozzle distribution](https://www.mrs-shop.com/druckschlauch-6mm-schwarz-27bar)
+    - [For mains (pump, tank)](https://www.mrs-shop.com/druckschlauch-8mm-blau-12bar)
+    - Fittings:
+        - [Coarse filter (suction side)](https://www.mrs-shop.com/vorfilter-fuer-beregnungsanlagen-150my-siebfilter)
+        - [Pump to 8mm hose (suction and pressure side)](https://www.mrs-shop.com/steckverschraubung-hochdruck-3/8-npt?number=MRS-00140)
+        - [T connector to pressure tank](https://www.mrs-shop.com/t-schnellverschraubung-mit-ueberwurfmutter-8/6mm)
+        - Need to find R20 or G3/4 inch connector to 8 mm hose.
+        - [Fine filter (pressure side after pressure tank)](https://www.mrs-shop.com/filtersystem-fs-sd18-fuer-beregnungsanlagen)
+        - [Supply distributor, manometer](https://www.mrs-shop.com/dreifach-schlauchverteiler-mit-manometeranzeige)
+        - [Nozzle distributor (per level)](https://www.mrs-shop.com/dreifach-durchgangsverteiler-2x-6mm-auf-3x-6mm)
+            - [Or X connector](https://www.mrs-shop.com/kreuzverbinder-schnellsteckverbinder-6-mm)
+            - [Or 3 way with included nozzles](https://www.mrs-shop.com/flexi-nebelduese-3fach?number=MRS-10272.44260215332662)
+    - [Hose scissor](https://www.mrs-shop.com/rohrschere-6-20mm-kunststoffrohr)
+ 
 ## Reservoir
 - **Function:** Stores the nutrient solution.
 - **Requirements:**
