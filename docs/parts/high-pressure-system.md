@@ -72,9 +72,7 @@
   - Reasonable response time.
 - **Products:**
   -  For disposal and mist (3 valve)
-    - https://se.rs-online.com/web/c/plumbing-pipeline/valves-taps/solenoid-valves/?selectedNavigation=attributes.Number_of_Ports=3
     - https://se.rs-online.com/web/p/solenoid-valves/1904145
-    - https://se.rs-online.com/web/p/solhttps://se.rs-online.com/web/p/solenoid-valves/1904146enoid-valves/1904146
     - https://se.rs-online.com/web/p/solenoid-valves/1904144
     - https://se.rs-online.com/web/p/solenoid-valves/7013378
   -  For single control of mist and water input (2 valve)
