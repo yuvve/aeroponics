@@ -9,6 +9,11 @@
 - https://www.martinservera.se/produkter/946228/hink-20l-med-lock-vit-livsmedelsgodkand
 - https://www.nowas.se/produkter/696-4---200-liter/13734-vattentank-platt-uppdelad-i-sektioner-150-liter/
 - https://www.nowas.se/produkter/696-4---200-liter/3776-vattentank-platt-85-liter/
+- https://www.witre.se/sv/wsw/staplingsbart-plastfat-med-lock-30-220-liter-a262000
+
+# Grow baskets and plugs
+- https://www.blomsterlandet.se/produkter/tillbehor/odla-inomhus/hydroponisk-odling/odlingsplugg-urban-growing-309833/
+- https://www.blomsterlandet.se/produkter/tillbehor/odla-inomhus/hydroponisk-odling/odlingskorg-urban-growing-309834/
 
 # Data
 - Around 15-30 cm in diameter
