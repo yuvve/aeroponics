@@ -22,6 +22,7 @@
         - [Data sheet](https://www.mrs-shop.com/media/pdf/33/56/12/micro-nebelduesen-uebersicht.pdf)
         - [Size chart](https://www.reddit.com/r/Hydroponics/comments/1i9yfze/mist_nozzle_and_pump_selection_chart_for/)
         - 0.5 mm opening: approx. 100ml/min, 95 degrees, 30-45 um.
+        - NOTE: nozzles are included in 3 way fitting (see Tubing and Fittings)
 
 ## Pressure Tank (Accumulator)
 - **Function:** Stabilizes pressure and reduces pump cycling.
@@ -47,10 +48,7 @@
         - [Pressure tank to hose (might need alternative)](https://www.mrs-shop.com/steckanschluss-innengewinde-6-8-12-mm)
         - [Fine filter (pressure side after pressure tank)](https://www.mrs-shop.com/filtersystem-fs-sd18-fuer-beregnungsanlagen)
         - [Supply distributor, manometer](https://www.mrs-shop.com/dreifach-schlauchverteiler-mit-manometeranzeige)
-        - [Nozzle distributor (per level)](https://www.mrs-shop.com/dreifach-durchgangsverteiler-2x-6mm-auf-3x-6mm)
-            - [Plug](https://www.mrs-shop.com/verschlussstecker-fuer-steckverschraubungen)  
-            - [Or X connector](https://www.mrs-shop.com/kreuzverbinder-schnellsteckverbinder-6-mm)
-            - [Or 3 way with included nozzles](https://www.mrs-shop.com/flexi-nebelduese-3fach)
+        - [3 way with included nozzles](https://www.mrs-shop.com/flexi-nebelduese-3fach)
         - [Adapter for solenoid valve, 1/2 inch to 8mm](https://www.mrs-shop.com/aufschraubverschraubung-mit-innengewinde-1/2-zoll) 
     - [Hose scissor](https://www.mrs-shop.com/rohrschere-6-20mm-kunststoffrohr)
  
@@ -78,7 +76,6 @@
     - https://se.rs-online.com/web/p/solenoid-valves/7013378
   -  For single control of mist and water input (2 valve)
       - [RS PRO Solenoid Valve, 2 port(s) , NC, 24 V ac/dc, 1/2in ](https://se.rs-online.com/web/p/solenoid-valves/1904135?gb=s)
-- https://www.mrs-shop.com/magnetventile
 
 ## General System Requirements
 - All (or most) parts in contact with water must use food-safe materials.
