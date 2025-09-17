@@ -1,0 +1,37 @@
+# Ideas:
+- Logging:
+    - Sensors
+    - Energy/water consumption?
+- Control:
+    - Misting schedules
+    - Ligthing
+- Protocols:
+    - MQTT?
+    - Home automation?
+- Support multiple towers?
+# UI
+- CLI (TUI)
+- Web-based (some kind of dashboard)
+    - Plots
+    - Analysis
+    - (AI?)
+- Alerts / push notifications
+## Existing dashboard solutions?
+- Home Assistant?
+    - Better for DIY, worse for scaling
+    - Much nicer UI
+    - Possibly (need to check) better mobile experience
+    - Easy to set up
+    - Directly supports ESPHome
+- SCADA (i.e. Rapid SCADA)
+    - Less DIY, better scaling
+    - Not so modern UI
+    - Most likely very bad mobile experience (need to check)
+    - Hard to set up
+    - ESPHome via MQTT
+- Grafana
+    - Many different plugins
+    - Cannot control devices
+    - Need separate DB to store data
+    - Both scalable and looks good
+    - ESPHome via MQTT or REST
