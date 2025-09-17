@@ -51,6 +51,7 @@
             - [Plug](https://www.mrs-shop.com/verschlussstecker-fuer-steckverschraubungen)  
             - [Or X connector](https://www.mrs-shop.com/kreuzverbinder-schnellsteckverbinder-6-mm)
             - [Or 3 way with included nozzles](https://www.mrs-shop.com/flexi-nebelduese-3fach)
+        - [Adapter for solenoid valve, 1/2 inch to 8mm](https://www.mrs-shop.com/aufschraubverschraubung-mit-innengewinde-1/2-zoll) 
     - [Hose scissor](https://www.mrs-shop.com/rohrschere-6-20mm-kunststoffrohr)
  
 ## Reservoir
@@ -76,9 +77,7 @@
     - https://se.rs-online.com/web/p/solenoid-valves/1904144
     - https://se.rs-online.com/web/p/solenoid-valves/7013378
   -  For single control of mist and water input (2 valve)
-    - https://se.rs-online.com/web/p/solenoid-valves/1904139?gb=s
-    - https://se.rs-online.com/web/p/solenoid-valves/2554162?gb=s
-    - https://se.rs-online.com/web/p/solenoid-valves/0342017?gb=s
+      - [RS PRO Solenoid Valve, 2 port(s) , NC, 24 V ac/dc, 1/2in ](https://se.rs-online.com/web/p/solenoid-valves/1904135?gb=s)
 - https://www.mrs-shop.com/magnetventile
 
 ## General System Requirements
