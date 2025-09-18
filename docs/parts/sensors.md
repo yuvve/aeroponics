@@ -20,6 +20,13 @@
 	- TMP36 TO-92 (-40 to 125 degrees C)
 - Conductivity
 	- TDS sensors might have potential, e.g. SEN0244
+
+# Preliminary purchasing list
+- https://www.electrokit.com/pt-100-givare (LM75 as digital alternative)
+- SEN0244 TDS sensor https://eu.mouser.com/ProductDetail/DFRobot/SEN0244?qs=W0yvOO0ixfHyUmHuEPwC1w%3D%3D
+- Sonic sensor x4 (for sealant testing) https://www.electrokit.com/avstandsmatare-ultraljud-hc-sr04-2-400cm
+- pH sensor https://www.mouser.se/ProductDetail/DFRobot/SEN0169?qs=lqAf%2FiVYw9h7p9WXQvmXEQ%3D%3D
+- Rough total cost: 910 SEK
 	
 	
 	
