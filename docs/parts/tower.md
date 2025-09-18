@@ -19,3 +19,8 @@
 # Data
 - Around 15-30 cm in diameter
 - Make sure material is certified for drinking (potable water)
+
+# Preliminary purchasing list
+- https://www.witre.se/sv/wsw/staplingsbart-plastfat-med-lock-30-220-liter-a262000
+- https://www.biltema.se/fritid/tradgard/bevattning/regntunnor/regntunna-med-lock-160-l
+- Total cost: 1614 SEK
