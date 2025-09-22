@@ -3,7 +3,9 @@
 - SEN0244 TDS sensor https://eu.mouser.com/ProductDetail/DFRobot/SEN0244?qs=W0yvOO0ixfHyUmHuEPwC1w%3D%3D or https://se.farnell.com/dfrobot/sen0244/analogue-tds-sensor-meter-kit/dp/3517934
 - Sonic sensor x4 (for sealant testing) https://www.electrokit.com/avstandsmatare-ultraljud-hc-sr04-2-400cm or https://se.farnell.com/multicomp-pro/hc-sr04/ultrasonic-sensor-40khz-4-5m/dp/4162009
 - pH sensor https://www.mouser.se/ProductDetail/DFRobot/SEN0169?qs=lqAf%2FiVYw9h7p9WXQvmXEQ%3D%3D or https://se.farnell.com/dfrobot/sen0169-v2/ph-sensor-meter-pro-kit-v2-arduino/dp/3769984
-- Total cost: 1 562 SEK
+- Potentiometer https://se.farnell.com/vishay/t93yb201kt20/trimmer-pot-200r-23turn-thd/dp/1141413 (one or two at e.g. 50 Ohm, 100 Ohm and 200 Ohm)
+- Humidity sensor HS30P x4 https://se.farnell.com/amphenol-advanced-sensors/hs30p/sensor-output-type/dp/3565570
+- Total cost:  ≈ 2000 SEK
 
 # What sensors do we need?
 - Temperature 
