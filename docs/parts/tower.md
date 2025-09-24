@@ -2,6 +2,8 @@
 - https://www.gpa.se/produkter/ventilation/ventilationsror/vpvc/#tab-modeller
 - https://www.ahlsell.se/products/va--mark/tryckror/peh-tryckror/peh-tryckror-rc/sdr17/2514542---250x148-pe-ror-sdr17-pn125-l6m-pe100rc-bla-stripe
 - https://www.extena.se/
+- https://www.witre.se/sv/wsw/staplingsbart-plastfat-med-lock-30-220-liter-a262000
+- https://www.ajprodukter.se/lager-verkstad/kemikaliehantering/plastfat-och-platfat/plastfat-437095-437096
 
 # Links to product websites (bucket/reservoir)
 - https://www.campingvaruhuset.se/sv/aquaroll-renvattentank-40l-bla
@@ -11,6 +13,7 @@
 - https://www.nowas.se/produkter/696-4---200-liter/3776-vattentank-platt-85-liter/
 - https://www.witre.se/sv/wsw/staplingsbart-plastfat-med-lock-30-220-liter-a262000
 - www.biltema.se/fritid/friluftsliv-och-camping/vattendunkar/vattendunk-20-liter-2000050685
+- https://www.biltema.se/fritid/tradgard/bevattning/regntunnor/regntunna-med-lock-160-l
 
 # Grow baskets and plugs
 - https://www.blomsterlandet.se/produkter/tillbehor/odla-inomhus/hydroponisk-odling/odlingsplugg-urban-growing-309833/
@@ -21,6 +24,6 @@
 - Make sure material is certified for drinking (potable water)
 
 # Preliminary purchasing list
-- https://www.witre.se/sv/wsw/staplingsbart-plastfat-med-lock-30-220-liter-a262000
-- https://www.biltema.se/fritid/tradgard/bevattning/regntunnor/regntunna-med-lock-160-l
-- Total cost: 1614 SEK
+- https://www.ajprodukter.se/lager-verkstad/kemikaliehantering/plastfat-och-platfat/plastfat-437095-437096
+- https://www.biltema.se/fritid/friluftsliv-och-camping/vattendunkar/vattendunk-20-liter-2000050685
+- Total cost: 868,2 SEK (excl. VAT)
