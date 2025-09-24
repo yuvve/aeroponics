@@ -1,0 +1,2 @@
+- 3st [Arduino Nano ESP32 with Headers](https://se.rs-online.com/web/p/arduino/2686962?gb=s) for reading sensors and controlling actuators
+- 1st [Raspberry Pi 3B+](https://se.rs-online.com/web/p/raspberry-pi/1373331?gb=s) for IoT communication
