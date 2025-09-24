@@ -1,0 +1,63 @@
+# UI
+- CLI (TUI)
+- Web-based (some kind of dashboard)
+    - Plots
+    - Analysis
+    - (AI?)
+- Alerts / push notifications
+## Existing dashboard solutions?
+- Home Assistant?
+    - Better for DIY, worse for scaling
+    - Much nicer UI
+    - Possibly (need to check) better mobile experience
+    - Easy to set up
+    - Directly supports ESPHome
+- SCADA (i.e. Rapid SCADA)
+    - Less DIY, better scaling
+    - Not so modern UI
+    - Most likely very bad mobile experience (need to check)
+    - Hard to set up
+    - ESPHome via MQTT
+- Grafana
+    - Many different plugins
+    - Cannot control devices
+    - Need separate DB to store data
+    - Both scalable and looks good
+    - ESPHome via MQTT or REST
+- Own website / server
+    - Can be programmed with any popular framework
+    - Need backing DB
+    - CAN be scalable
+    - Most flexible, we can add any functionality we want
+    - More complex and time consuming
+    - Can have security issues if not done properly and kept updated
+- Open Remote
+    - Seems to be in-between home-assistant and SCADA
+    - No built in ESPHome integration
+    - Supports MQTT and REST API
+    - Looks nice
+    - Easy to use
+- OpenHAB
+    - Similar to Open Remote
+    - Has [ESPHome bindings](https://github.com/seime/openhab-esphome)
+    - Doesn't look as well as Open Remote
+# Functionality
+- Monitor data
+    - Water level
+    - Humidity
+    - Flow?
+    - EC
+    - Ph
+    - Temperature
+    - Energy/water consumption
+- Get alerts
+    - At least push notifications or SMS
+    - Conditions monitoring / maintenance alerts
+    - Failure alerts
+    - Parameters passed threshold (ex: water level too low)
+- Control certain actuators
+    - Lights
+    - Pump valve
+        - Adaptive misting?
+    - (most likely will be scrapped) nutrient dispensers
+- Plant profiles
