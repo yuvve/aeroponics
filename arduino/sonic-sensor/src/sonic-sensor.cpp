@@ -1,8 +1,9 @@
-/* -*- mode: c++ -*- */
-// Datasheet: https://cdn.sparkfun.com/datasheets/Sensors/Proximity/HCSR04.pdf
+#include <Arduino.h>
 
-const int trigger_input = A0;
-const int echo = A1;
+const int trigger_input = 2;
+const int echo = 3;
+char buf[256];
+unsigned long distance;
 
 
 void setup()
@@ -19,5 +20,7 @@ void loop()
     digitalWrite(trigger_input, LOW);
 
     distance = pulseIn(echo, HIGH)/58; // cm
+    sprintf(buf, "Distance: %u\r\n", distance);
+    Serial.write(buf);
     delay(70); // > 60 ms measurement cycle
 }
