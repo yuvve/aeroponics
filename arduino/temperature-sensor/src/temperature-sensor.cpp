@@ -18,7 +18,10 @@ void loop()
     delay(800); // Adjust this for update frequency (>750 ms)
     float temp = sensors.getTempCByIndex(0); // First IC on the bus
     if(temp == DEVICE_DISCONNECTED_C)
-        Serial.println("NULL");
-    sprintf(buf, "T:%f", temp);
-    Serial.println(buf);
+        Serial.println("T:NULL");
+    else
+    {
+        sprintf(buf, "T:%f", temp);
+        Serial.println(buf);
+    }
 }
