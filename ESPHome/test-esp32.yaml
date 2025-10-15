@@ -22,7 +22,7 @@ sensor:
     update_interval: 1s
     state_class: measurement
     unit_of_measurement: "count"
-    state_topic: "counter"
+    state_topic: "tower1/sensor/temperature"
 
 interval:
   - interval: 1s
@@ -32,7 +32,7 @@ interval:
       - component.update: counter_sensor
 
 mqtt:
-  broker: mqtt_broker_ip_address
+  broker: !secret mqtt_broker_ip_address
   birth_message:
     topic: esp32-status/topic
     payload: online
