@@ -1,0 +1,7 @@
+version: 1
+things:
+  mqtt:broker:mosquitto:
+    label: MQTT Broker
+    config:
+      host: 100.119.241.15
+      clientid: d375d2da-2910-40ac-aea4-b2c4a89b22b4

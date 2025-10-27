@@ -1,0 +1,122 @@
+version: 1
+things:
+  mqtt:topic:tower-1-lower-temp: 
+    label: Tower 1 Temp (Lower)
+    bridge: mqtt:broker:mosquitto 
+    channels:
+      tower-1-lower-temp: 
+        type: number
+        label: Temperature
+        kind: state 
+        config:
+          stateTopic: tower/1/sensor/lower/temp
+  mqtt:topic:tower-1-lower-humidity: 
+    label: Tower 1 Humidity (Lower)
+    bridge: mqtt:broker:mosquitto 
+    channels:
+      tower-1-lower-humidity: 
+        type: number
+        label: Humidity
+        kind: state 
+        config:
+          stateTopic: tower/1/sensor/lower/humidity
+  mqtt:topic:tower-1-upper-temp: 
+    label: Tower 1 Temp (Upper)
+    bridge: mqtt:broker:mosquitto 
+    channels:
+      tower-1-upper-temp: 
+        type: number
+        label: Temperature
+        kind: state 
+        config:
+          stateTopic: tower/1/sensor/upper/temp
+  mqtt:topic:tower-1-upper-humidity: 
+    label: Tower 1 Humidity (Upper)
+    bridge: mqtt:broker:mosquitto 
+    channels:
+      tower-1-upper-humidity: 
+        type: number
+        label: Humidity
+        kind: state 
+        config:
+          stateTopic: tower/1/sensor/upper/humidity
+  mqtt:topic:tower-1-upper-light: 
+    label: Tower 1 Light 
+    bridge: mqtt:broker:mosquitto 
+    channels:
+      tower-1-upper-light: 
+        type: switch
+        label: Light
+        kind: state 
+        config:
+          stateTopic: tower/1/sensor/light
+          commandTopic: tower/1/control/light
+          on: "ON"
+          off: "OFF"
+  mqtt:topic:tower-1-ec:
+    label: Tower 1 EC 
+    bridge: mqtt:broker:mosquitto 
+    channels:
+      tower-1-ec: 
+        type: number
+        label: Electrical Conductivity
+        kind: state 
+        config:
+          stateTopic: tower/1/sensor/ec
+  mqtt:topic:tower-1-water-level:
+    label: Tower 1 Water Level 
+    bridge: mqtt:broker:mosquitto 
+    channels:
+      tower-1-water-level: 
+        type: number
+        label: Water Level
+        kind: state 
+        config:
+          stateTopic: tower/1/sensor/water-level
+  mqtt:topic:tower-1-ph:
+    label: Tower 1 pH Level 
+    bridge: mqtt:broker:mosquitto 
+    channels:
+      tower-1-ph:
+        type: number
+        label: pH Level
+        kind: state 
+        config:
+          stateTopic: tower/1/sensor/pH
+  mqtt:topic:tower-1-pressure:
+    label: Tower 1 Pressure
+    bridge: mqtt:broker:mosquitto 
+    channels:
+      tower-1-pressure:
+        type: number
+        label: Pressure
+        kind: state 
+        config:
+          stateTopic: tower/1/sensor/pressure
+  mqtt:topic:tower-1-solenoid:
+    label: Tower 1 Pump Solenoid
+    bridge: mqtt:broker:mosquitto 
+    channels:
+      tower-1-solenoid:
+        type: switch
+        label: Pressure
+        kind: state 
+        config:
+          stateTopic: tower/1/sensor/solenoid
+          commandTopic: tower/1/control/solenoid
+          on: "ON"
+          off: "OFF"
+  mqtt:topic:tower-1-pump:
+    label: Tower 1 Pump Relay
+    bridge: mqtt:broker:mosquitto 
+    channels:
+      tower-1-solenoid:
+        type: switch
+        label: Pressure
+        kind: state 
+        config:
+          stateTopic: tower/1/sensor/pump
+          commandTopic: tower/1/control/pump
+          on: "ON"
+          off: "OFF"
+
