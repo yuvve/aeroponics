@@ -40,11 +40,11 @@ things:
         kind: state 
         config:
           stateTopic: tower/1/sensor/humidity-upper
-  mqtt:topic:tower-1-upper-light: 
+  mqtt:topic:tower-1-light: 
     label: Tower 1 Light 
     bridge: mqtt:broker:mosquitto 
     channels:
-      tower-1-upper-light: 
+      tower-1-light: 
         type: switch
         label: Light
         kind: state 
@@ -110,7 +110,7 @@ things:
     label: Tower 1 Pump Relay
     bridge: mqtt:broker:mosquitto 
     channels:
-      tower-1-solenoid:
+      tower-1-pump:
         type: switch
         label: Pressure
         kind: state 
