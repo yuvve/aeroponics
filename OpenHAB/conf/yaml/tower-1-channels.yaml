@@ -99,7 +99,7 @@ things:
     channels:
       tower-1-solenoid:
         type: switch
-        label: Pressure
+        label: Solenoid
         kind: state 
         config:
           stateTopic: tower/1/sensor/solenoid
@@ -112,7 +112,7 @@ things:
     channels:
       tower-1-pump:
         type: switch
-        label: Pressure
+        label: Pump
         kind: state 
         config:
           stateTopic: tower/1/sensor/pump
