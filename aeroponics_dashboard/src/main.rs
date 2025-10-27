@@ -1,5 +1,6 @@
 mod aeroponics;
 
+use aeroponics::*;
 use clap::Parser;
 use rumqttc::{AsyncClient, Event, Incoming, MqttOptions, QoS};
 use std::time::Duration;
@@ -15,19 +16,80 @@ struct Args {
     port: u16,
 }
 
-fn parse_message(topic: &str, payload: &str) -> Option<(&str, f32)> {
-    if let Ok(value) = payload.parse::<f32>() {
-        Some((topic, value))
-        // TODO: match topic and update sensors
+fn parse_topic(topic: &str, payload: &str) -> Option<(u16, SensorName, SensorData)> {
+    let parts: Vec<_> = topic.split('/').collect();
+
+    if parts.len() == 4 && parts[0] == "tower" && parts[2] == "sensor" {
+        let id = parts[1].parse::<u16>().ok()?;
+        let sensor_name = parts[3];
+        match sensor_name {
+            "temp-lower" => Some((
+                id,
+                SensorName::TemperatureLower,
+                SensorData::Numeric(payload.parse().ok()?),
+            )),
+            "temp-upper" => Some((
+                id,
+                SensorName::TemperatureUpper,
+                SensorData::Numeric(payload.parse().ok()?),
+            )),
+            "humidity-lower" => Some((
+                id,
+                SensorName::HumidityLower,
+                SensorData::Numeric(payload.parse().ok()?),
+            )),
+            "humidity-upper" => Some((
+                id,
+                SensorName::HumidityUpper,
+                SensorData::Numeric(payload.parse().ok()?),
+            )),
+            "pressure" => Some((
+                id,
+                SensorName::Pressure,
+                SensorData::Numeric(payload.parse().ok()?),
+            )),
+            "ec" => Some((
+                id,
+                SensorName::Ec,
+                SensorData::Numeric(payload.parse().ok()?),
+            )),
+            "ph" => Some((
+                id,
+                SensorName::Ph,
+                SensorData::Numeric(payload.parse().ok()?),
+            )),
+            "water-level" => Some((
+                id,
+                SensorName::WaterLevel,
+                SensorData::Numeric(payload.parse().ok()?),
+            )),
+            "pump" => Some((
+                id,
+                SensorName::PumpRelay,
+                SensorData::Boolean(payload.parse().ok()?),
+            )),
+            "solenoid" => Some((
+                id,
+                SensorName::PumpSolenoid,
+                SensorData::Boolean(payload.parse().ok()?),
+            )),
+            _ => None,
+        }
     } else {
         None
+    }
+}
+
+fn parse_message(towers: &Towers, topic: &str, payload: &str) {
+    if let Some((id, sensor_name, sensor_data)) = parse_topic(topic, payload) {
+        // TODO: Update sensors
     }
 }
 
 #[tokio::main]
 async fn main() {
     let args = Args::parse();
-    let mut sensor_data = Sensors::new_empty();
+    let mut sensor_data = Sensors::new();
     let mut mqttoptions = MqttOptions::new("rumqtt-async", args.broker_ip, args.port);
     mqttoptions.set_keep_alive(Duration::from_secs(5));
 
