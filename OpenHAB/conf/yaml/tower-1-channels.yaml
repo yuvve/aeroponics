@@ -9,7 +9,7 @@ things:
         label: Temperature
         kind: state 
         config:
-          stateTopic: tower/1/sensor/lower/temp
+          stateTopic: tower/1/sensor/temp-lower
   mqtt:topic:tower-1-lower-humidity: 
     label: Tower 1 Humidity (Lower)
     bridge: mqtt:broker:mosquitto 
@@ -19,7 +19,7 @@ things:
         label: Humidity
         kind: state 
         config:
-          stateTopic: tower/1/sensor/lower/humidity
+          stateTopic: tower/1/sensor/humidity-lower
   mqtt:topic:tower-1-upper-temp: 
     label: Tower 1 Temp (Upper)
     bridge: mqtt:broker:mosquitto 
@@ -29,7 +29,7 @@ things:
         label: Temperature
         kind: state 
         config:
-          stateTopic: tower/1/sensor/upper/temp
+          stateTopic: tower/1/sensor/temp-upper
   mqtt:topic:tower-1-upper-humidity: 
     label: Tower 1 Humidity (Upper)
     bridge: mqtt:broker:mosquitto 
@@ -39,7 +39,7 @@ things:
         label: Humidity
         kind: state 
         config:
-          stateTopic: tower/1/sensor/upper/humidity
+          stateTopic: tower/1/sensor/humidity-upper
   mqtt:topic:tower-1-upper-light: 
     label: Tower 1 Light 
     bridge: mqtt:broker:mosquitto 
