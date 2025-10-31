@@ -1,65 +1,5 @@
 use std::fmt;
 
-pub struct Towers(Vec<AeroponicsTower>);
-
-impl Towers {
-    fn new() -> Self {
-        Towers(Vec::new())
-    }
-    fn add_tower(&mut self, id: u16) {
-        self.0.push(AeroponicsTower::new(id));
-    }
-    fn get_by_id_mut(&mut self, id: u16) -> Option<&mut AeroponicsTower> {
-        self.0.iter_mut().find(|tower| tower.id == id)
-    }
-}
-
-struct AeroponicsTower {
-    id: u16,
-    sensors: Sensors,
-    actuators: Actuators,
-}
-
-impl AeroponicsTower {
-    fn new(id: u16) -> Self {
-        AeroponicsTower {
-            id,
-            sensors: Sensors::new(),
-            actuators: Actuators::new(),
-        }
-    }
-}
-
-pub struct Sensors {
-    temperature_lower: Option<f32>,
-    temperature_upper: Option<f32>,
-    humidity_lower: Option<f32>,
-    humidity_upper: Option<f32>,
-    pressure: Option<f32>,
-    ec: Option<f32>,
-    ph: Option<f32>,
-    water_level: Option<f32>,
-    pump_relay: Option<bool>,
-    pump_solenoid: Option<bool>,
-}
-
-impl Sensors {
-    pub fn new() -> Self {
-        Sensors {
-            temperature_lower: None,
-            temperature_upper: None,
-            humidity_lower: None,
-            humidity_upper: None,
-            pressure: None,
-            ec: None,
-            ph: None,
-            water_level: None,
-            pump_relay: None,
-            pump_solenoid: None,
-        }
-    }
-}
-
 pub enum SensorName {
     TemperatureLower,
     TemperatureUpper,
@@ -78,6 +18,96 @@ pub enum SensorData {
     Boolean(bool),
 }
 
+pub struct Towers(Vec<Tower>);
+
+pub struct Tower {
+    id: u16,
+    sensors: Sensors,
+    actuators: Actuators,
+}
+
+pub struct Sensors {
+    temperature_lower: Option<f32>,
+    temperature_upper: Option<f32>,
+    humidity_lower: Option<f32>,
+    humidity_upper: Option<f32>,
+    pressure: Option<f32>,
+    ec: Option<f32>,
+    ph: Option<f32>,
+    water_level: Option<f32>,
+    pump_relay: Option<bool>,
+    pump_solenoid: Option<bool>,
+}
+
+pub struct Actuators {}
+
+impl Towers {
+    pub fn new() -> Self {
+        Towers(Vec::new())
+    }
+    pub fn add_tower(&mut self, tower: Tower) {
+        self.0.push(tower);
+    }
+    pub fn get_by_id_mut(&mut self, id: u16) -> Option<&mut Tower> {
+        self.0.iter_mut().find(|tower| tower.id == id)
+    }
+}
+
+impl fmt::Display for Towers {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        for tower in &self.0 {
+            writeln!(f, "Tower ID {}: {}", tower.id, tower.sensors)?;
+        }
+        Ok(())
+    }
+}
+
+impl Tower {
+    pub fn new(id: u16) -> Self {
+        Tower {
+            id,
+            sensors: Sensors::new(),
+            actuators: Actuators::new(),
+        }
+    }
+    pub fn update_sensor(&mut self, sensor_name: SensorName, value: SensorData) {
+        self.sensors.update_sensor(sensor_name, value);
+    }
+}
+
+impl Sensors {
+    pub fn new() -> Self {
+        Sensors {
+            temperature_lower: None,
+            temperature_upper: None,
+            humidity_lower: None,
+            humidity_upper: None,
+            pressure: None,
+            ec: None,
+            ph: None,
+            water_level: None,
+            pump_relay: None,
+            pump_solenoid: None,
+        }
+    }
+
+    pub fn update_sensor(&mut self, sensor_name: SensorName, value: SensorData) {
+        match sensor_name {
+            SensorName::TemperatureLower => self.temperature_lower = Some(value.into()),
+            SensorName::TemperatureUpper => self.temperature_upper = Some(value.into()),
+            SensorName::HumidityLower => self.humidity_lower = Some(value.into()),
+            SensorName::HumidityUpper => self.humidity_upper = Some(value.into()),
+            SensorName::Pressure => self.pressure = Some(value.into()),
+            SensorName::Ec => self.ec = Some(value.into()),
+            SensorName::Ph => self.ph = Some(value.into()),
+            SensorName::WaterLevel => self.water_level = Some(value.into()),
+            SensorName::PumpRelay => self.pump_relay = Some(value.into()),
+            SensorName::PumpSolenoid => self.pump_solenoid = Some(value.into()),
+            _ => {}
+        }
+    }
+}
+
 impl From<SensorData> for f32 {
     fn from(data: SensorData) -> Self {
         match data {
@@ -92,28 +122,6 @@ impl From<SensorData> for bool {
         match data {
             SensorData::Boolean(val) => val,
             _ => panic!("Expected boolean sensor data"),
-        }
-    }
-}
-
-pub trait SensorUpdate {
-    fn update_sensor(&mut self, sensor_name: SensorName, value: SensorData);
-}
-
-impl SensorUpdate for Sensors {
-    fn update_sensor(&mut self, sensor_name: SensorName, value: SensorData) {
-        match sensor_name {
-            SensorName::TemperatureLower => self.temperature_lower = Some(value.into()),
-            SensorName::TemperatureUpper => self.temperature_upper = Some(value.into()),
-            SensorName::HumidityLower => self.humidity_lower = Some(value.into()),
-            SensorName::HumidityUpper => self.humidity_upper = Some(value.into()),
-            SensorName::Pressure => self.pressure = Some(value.into()),
-            SensorName::Ec => self.ec = Some(value.into()),
-            SensorName::Ph => self.ph = Some(value.into()),
-            SensorName::WaterLevel => self.water_level = Some(value.into()),
-            SensorName::PumpRelay => self.pump_relay = Some(value.into()),
-            SensorName::PumpSolenoid => self.pump_solenoid = Some(value.into()),
-            _ => {}
         }
     }
 }
@@ -154,14 +162,8 @@ impl fmt::Display for Sensors {
     }
 }
 
-pub struct Actuators {}
-
 impl Actuators {
     pub fn new() -> Self {
         Actuators {}
     }
-}
-
-pub trait ActuatorControl {
-    fn set_actuator(&mut self, actuator_name: SensorName, value: bool);
 }

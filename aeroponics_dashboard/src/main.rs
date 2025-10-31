@@ -80,72 +80,35 @@ fn parse_topic(topic: &str, payload: &str) -> Option<(u16, SensorName, SensorDat
     }
 }
 
-fn parse_message(towers: &Towers, topic: &str, payload: &str) {
+fn update_towers(towers: &mut Towers, topic: &str, payload: &str) {
     if let Some((id, sensor_name, sensor_data)) = parse_topic(topic, payload) {
-        // TODO: Update sensors
+        if let Some(tower) = towers.get_by_id_mut(id) {
+            tower.update_sensor(sensor_name, sensor_data);
+        } else {
+            let mut new_tower = Tower::new(id);
+            new_tower.update_sensor(sensor_name, sensor_data);
+            towers.add_tower(new_tower);
+        }
     }
 }
 
 #[tokio::main]
 async fn main() {
     let args = Args::parse();
-    let mut sensor_data = Sensors::new();
     let mut mqttoptions = MqttOptions::new("rumqtt-async", args.broker_ip, args.port);
     mqttoptions.set_keep_alive(Duration::from_secs(5));
 
-    let (mut client, mut eventloop) = AsyncClient::new(mqttoptions, 10);
-    client
-        .subscribe("tower1/sensor/temperature", QoS::AtMostOnce)
-        .await
-        .unwrap();
+    let (client, mut eventloop) = AsyncClient::new(mqttoptions, 10);
+    client.subscribe("tower/#", QoS::AtMostOnce).await.unwrap();
 
-    task::spawn(async move {
-        for i in 0..10 {
-            client
-                .publish("hello/rumqtt", QoS::AtLeastOnce, false, vec![i; i as usize])
-                .await
-                .unwrap();
-            time::sleep(Duration::from_millis(100)).await;
-        }
-    });
+    let mut towers = Towers::new();
 
     loop {
         match eventloop.poll().await {
             Ok(Event::Incoming(Incoming::Publish(p))) => {
                 let payload = String::from_utf8_lossy(&p.payload);
-                match p.topic.as_str() {
-                    "tower1/sensor/temperature" => {
-                        if let Ok(temp) = payload.parse::<f32>() {
-                            sensor_data.temperature = temp;
-                        }
-                    }
-                    "tower1/sensor/humidity" => {
-                        if let Ok(hum) = payload.parse::<f32>() {
-                            sensor_data.humidity = hum;
-                        }
-                    }
-                    "tower1/sensor/pressure" => {
-                        if let Ok(pres) = payload.parse::<f32>() {
-                            sensor_data.pressure = pres;
-                        }
-                    }
-                    "tower1/sensor/ec" => {
-                        if let Ok(ec) = payload.parse::<f32>() {
-                            sensor_data.ec = ec;
-                        }
-                    }
-                    "tower1/sensor/ph" => {
-                        if let Ok(ph) = payload.parse::<f32>() {
-                            sensor_data.ph = ph;
-                        }
-                    }
-                    "tower1/sensor/water_level" => {
-                        if let Ok(wl) = payload.parse::<f32>() {
-                            sensor_data.water_level = wl;
-                        }
-                    }
-                    _ => {}
-                }
+                update_towers(&mut towers, &p.topic, &payload);
+                println!("{}", towers);
             }
             Ok(_) => {}
             Err(e) => {
@@ -153,6 +116,5 @@ async fn main() {
                 break;
             }
         }
-        print!("\r{}", sensor_data);
     }
 }
