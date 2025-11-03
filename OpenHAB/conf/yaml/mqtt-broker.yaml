@@ -1,6 +1,7 @@
 version: 1
 things:
   mqtt:broker:mosquitto:
-    label: MQTT Broker
+    isBridge: true
     config:
       host: aeropi
+
