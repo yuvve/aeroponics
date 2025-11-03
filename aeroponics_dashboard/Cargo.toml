@@ -8,3 +8,7 @@ clap = { version = "4.5.49", features = ["derive"] }
 rumqttc = "0.25.0"
 tokio = { version = "1.47.1", features = ["full"] }
 tui = "0.19.0"
+
+[profile.dev]
+debug = true
+opt-level = 0

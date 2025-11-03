@@ -63,16 +63,16 @@ fn parse_topic(topic: &str, payload: &str) -> Option<(u16, SensorName, SensorDat
                 SensorName::WaterLevel,
                 SensorData::Numeric(payload.parse().ok()?),
             )),
-            "pump" => Some((
-                id,
-                SensorName::PumpRelay,
-                SensorData::Boolean(payload.parse().ok()?),
-            )),
-            "solenoid" => Some((
-                id,
-                SensorName::PumpSolenoid,
-                SensorData::Boolean(payload.parse().ok()?),
-            )),
+            "pump" => match payload.to_lowercase().as_str() {
+                "on" => Some((id, SensorName::PumpRelay, SensorData::Boolean(true))),
+                "off" => Some((id, SensorName::PumpRelay, SensorData::Boolean(false))),
+                _ => None,
+            },
+            "solenoid" => match payload.to_lowercase().as_str() {
+                "open" => Some((id, SensorName::PumpSolenoid, SensorData::Boolean(true))),
+                "closed" => Some((id, SensorName::PumpSolenoid, SensorData::Boolean(false))),
+                _ => None,
+            },
             _ => None,
         }
     } else {
@@ -101,6 +101,11 @@ async fn main() {
     let (client, mut eventloop) = AsyncClient::new(mqttoptions, 10);
     client.subscribe("tower/#", QoS::AtMostOnce).await.unwrap();
 
+    client
+        .publish("dashboard/hello", QoS::AtLeastOnce, false, "")
+        .await
+        .unwrap();
+
     let mut towers = Towers::new();
 
     loop {
@@ -116,5 +121,34 @@ async fn main() {
                 break;
             }
         }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_parse_topic_numeric() {
+        let topic = "tower/1/sensor/temp-lower";
+        let payload = "23.5";
+        let result = parse_topic(topic, payload);
+        assert!(result.is_some());
+        let (id, sensor_name, sensor_data) = result.unwrap();
+        assert_eq!(id, 1);
+        assert_eq!(sensor_name, SensorName::TemperatureLower);
+        assert_eq!(sensor_data, SensorData::Numeric(23.5));
+    }
+
+    #[test]
+    fn test_parse_topic_boolean() {
+        let topic = "tower/2/sensor/pump";
+        let payload = "on";
+        let result = parse_topic(topic, payload);
+        assert!(result.is_some());
+        let (id, sensor_name, sensor_data) = result.unwrap();
+        assert_eq!(id, 2);
+        assert_eq!(sensor_name, SensorName::PumpRelay);
+        assert_eq!(sensor_data, SensorData::Boolean(true));
     }
 }

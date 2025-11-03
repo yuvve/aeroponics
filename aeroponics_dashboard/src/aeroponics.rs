@@ -1,5 +1,6 @@
 use std::fmt;
 
+#[derive(Debug, PartialEq)]
 pub enum SensorName {
     TemperatureLower,
     TemperatureUpper,
@@ -13,6 +14,7 @@ pub enum SensorName {
     PumpSolenoid,
 }
 
+#[derive(Debug, PartialEq)]
 pub enum SensorData {
     Numeric(f32),
     Boolean(bool),
@@ -165,5 +167,61 @@ impl fmt::Display for Sensors {
 impl Actuators {
     pub fn new() -> Self {
         Actuators {}
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_add_tower() {
+        let mut towers = Towers::new();
+        let tower1 = Tower::new(1);
+        let tower2 = Tower::new(2);
+        towers.add_tower(tower1);
+        towers.add_tower(tower2);
+
+        assert_eq!(towers.0.len(), 2);
+        assert_eq!(towers.0[0].id, 1);
+        assert_eq!(towers.0[1].id, 2);
+    }
+
+    #[test]
+    fn test_get_by_id_mut() {
+        let mut towers = Towers::new();
+        let tower1 = Tower::new(1);
+        let tower2 = Tower::new(2);
+        towers.add_tower(tower1);
+        towers.add_tower(tower2);
+        let tower = towers.get_by_id_mut(2);
+        assert!(tower.is_some());
+        assert_eq!(tower.unwrap().id, 2);
+    }
+
+    #[test]
+    fn test_update_sensors() {
+        let mut tower = Tower::new(1);
+        tower.update_sensor(SensorName::TemperatureLower, SensorData::Numeric(22.5));
+        tower.update_sensor(SensorName::TemperatureUpper, SensorData::Numeric(23.5));
+        tower.update_sensor(SensorName::HumidityLower, SensorData::Numeric(55.0));
+        tower.update_sensor(SensorName::HumidityUpper, SensorData::Numeric(60.0));
+        tower.update_sensor(SensorName::Pressure, SensorData::Numeric(1013.25));
+        tower.update_sensor(SensorName::Ec, SensorData::Numeric(1.5));
+        tower.update_sensor(SensorName::Ph, SensorData::Numeric(6.8));
+        tower.update_sensor(SensorName::WaterLevel, SensorData::Numeric(75.0));
+        tower.update_sensor(SensorName::PumpRelay, SensorData::Boolean(true));
+        tower.update_sensor(SensorName::PumpSolenoid, SensorData::Boolean(false));
+
+        assert_eq!(tower.sensors.temperature_lower, Some(22.5));
+        assert_eq!(tower.sensors.temperature_upper, Some(23.5));
+        assert_eq!(tower.sensors.humidity_lower, Some(55.0));
+        assert_eq!(tower.sensors.humidity_upper, Some(60.0));
+        assert_eq!(tower.sensors.pressure, Some(1013.25));
+        assert_eq!(tower.sensors.ec, Some(1.5));
+        assert_eq!(tower.sensors.ph, Some(6.8));
+        assert_eq!(tower.sensors.water_level, Some(75.0));
+        assert_eq!(tower.sensors.pump_relay, Some(true));
+        assert_eq!(tower.sensors.pump_solenoid, Some(false));
     }
 }
