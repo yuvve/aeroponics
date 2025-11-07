@@ -20,6 +20,17 @@ pub enum SensorData {
     Boolean(bool),
 }
 
+#[derive(Debug, PartialEq)]
+pub enum ActuatorName {
+    Pump,
+    Solenoid,
+}
+
+#[derive(Debug, PartialEq)]
+pub enum ActuatorData {
+    Boolean(bool),
+}
+
 pub struct Towers(Vec<Tower>);
 
 pub struct Tower {
@@ -53,6 +64,17 @@ impl Towers {
     pub fn get_by_id_mut(&mut self, id: u16) -> Option<&mut Tower> {
         self.0.iter_mut().find(|tower| tower.id == id)
     }
+    pub fn update(&mut self, topic: &str, payload: &str) {
+        if let Some((id, sensor_name, sensor_data)) = Tower::parse_sensor_topic(topic, payload) {
+            if let Some(tower) = self.get_by_id_mut(id) {
+                tower.update_sensor(sensor_name, sensor_data);
+            } else {
+                let mut new_tower = Tower::new(id);
+                new_tower.update_sensor(sensor_name, sensor_data);
+                self.add_tower(new_tower);
+            }
+        }
+    }
 }
 
 impl fmt::Display for Towers {
@@ -72,8 +94,39 @@ impl Tower {
             actuators: Actuators::new(),
         }
     }
+
     pub fn update_sensor(&mut self, sensor_name: SensorName, value: SensorData) {
         self.sensors.update_sensor(sensor_name, value);
+    }
+
+    pub fn parse_sensor_topic(topic: &str, payload: &str) -> Option<(u16, SensorName, SensorData)> {
+        let parts: Vec<_> = topic.split('/').collect();
+
+        if parts.len() == 4 && parts[0] == "tower" && parts[2] == "sensor" {
+            let id = parts[1].parse::<u16>().ok()?;
+            let name = parts[3];
+            if let Some((sensor_name, sensor_data)) = Sensors::parse(name, payload) {
+                Some((id, sensor_name, sensor_data))
+            } else {
+                None
+            }
+        } else {
+            None
+        }
+    }
+
+    pub fn create_actuator_topic(
+        &self,
+        actuator_name: ActuatorName,
+        actuator_data: ActuatorData,
+    ) -> Result<(String, String), ()> {
+        if let Ok((actuator_topic, payload)) = Actuators::create_topic(actuator_name, actuator_data)
+        {
+            let topic = format!("tower/{}/{}", self.id, actuator_topic);
+            Ok((topic, payload))
+        } else {
+            Err(())
+        }
     }
 }
 
@@ -106,6 +159,48 @@ impl Sensors {
             SensorName::PumpRelay => self.pump_relay = Some(value.into()),
             SensorName::PumpSolenoid => self.pump_solenoid = Some(value.into()),
             _ => {}
+        }
+    }
+
+    pub fn parse(sensor_name: &str, payload: &str) -> Option<(SensorName, SensorData)> {
+        match sensor_name {
+            "temp-lower" => Some((
+                SensorName::TemperatureLower,
+                SensorData::Numeric(payload.parse().ok()?),
+            )),
+            "temp-upper" => Some((
+                SensorName::TemperatureUpper,
+                SensorData::Numeric(payload.parse().ok()?),
+            )),
+            "humidity-lower" => Some((
+                SensorName::HumidityLower,
+                SensorData::Numeric(payload.parse().ok()?),
+            )),
+            "humidity-upper" => Some((
+                SensorName::HumidityUpper,
+                SensorData::Numeric(payload.parse().ok()?),
+            )),
+            "pressure" => Some((
+                SensorName::Pressure,
+                SensorData::Numeric(payload.parse().ok()?),
+            )),
+            "ec" => Some((SensorName::Ec, SensorData::Numeric(payload.parse().ok()?))),
+            "ph" => Some((SensorName::Ph, SensorData::Numeric(payload.parse().ok()?))),
+            "water-level" => Some((
+                SensorName::WaterLevel,
+                SensorData::Numeric(payload.parse().ok()?),
+            )),
+            "pump" => match payload.to_lowercase().as_str() {
+                "on" => Some((SensorName::PumpRelay, SensorData::Boolean(true))),
+                "off" => Some((SensorName::PumpRelay, SensorData::Boolean(false))),
+                _ => None,
+            },
+            "solenoid" => match payload.to_lowercase().as_str() {
+                "open" => Some((SensorName::PumpSolenoid, SensorData::Boolean(true))),
+                "closed" => Some((SensorName::PumpSolenoid, SensorData::Boolean(false))),
+                _ => None,
+            },
+            _ => None,
         }
     }
 }
@@ -168,6 +263,24 @@ impl Actuators {
     pub fn new() -> Self {
         Actuators {}
     }
+    pub fn create_topic(
+        actuator_name: ActuatorName,
+        actuator_data: ActuatorData,
+    ) -> Result<(String, String), ()> {
+        match (actuator_name, actuator_data) {
+            (ActuatorName::Pump, ActuatorData::Boolean(state)) => {
+                let topic = "control/pump".to_string();
+                let payload = if state { "on" } else { "off" }.to_string();
+                Ok((topic, payload))
+            }
+            (ActuatorName::Solenoid, ActuatorData::Boolean(state)) => {
+                let topic = "control/solenoid".to_string();
+                let payload = if state { "on" } else { "off" }.to_string();
+                Ok((topic, payload))
+            }
+            _ => Err(()),
+        }
+    }
 }
 
 #[cfg(test)]
@@ -223,5 +336,55 @@ mod tests {
         assert_eq!(tower.sensors.water_level, Some(75.0));
         assert_eq!(tower.sensors.pump_relay, Some(true));
         assert_eq!(tower.sensors.pump_solenoid, Some(false));
+    }
+
+    #[test]
+    fn test_parse_topic_numeric() {
+        let topic = "tower/1/sensor/temp-lower";
+        let payload = "23.5";
+        let result = Tower::parse_sensor_topic(topic, payload);
+        assert!(result.is_some());
+        let (id, sensor_name, sensor_data) = result.unwrap();
+        assert_eq!(id, 1);
+        assert_eq!(sensor_name, SensorName::TemperatureLower);
+        assert_eq!(sensor_data, SensorData::Numeric(23.5));
+    }
+
+    #[test]
+    fn test_parse_topic_boolean() {
+        let topic = "tower/2/sensor/pump";
+        let payload = "on";
+        let result = Tower::parse_sensor_topic(topic, payload);
+        assert!(result.is_some());
+        let (id, sensor_name, sensor_data) = result.unwrap();
+        assert_eq!(id, 2);
+        assert_eq!(sensor_name, SensorName::PumpRelay);
+        assert_eq!(sensor_data, SensorData::Boolean(true));
+    }
+
+    #[test]
+    fn test_parse_nonexistent_sensor() {
+        let topic = "tower/1/sensor/unknown-sensor";
+        let payload = "123";
+        let result = Tower::parse_sensor_topic(topic, payload);
+        assert!(result.is_none());
+    }
+
+    #[test]
+    fn test_create_actuator_topic() {
+        let tower = Tower::new(1);
+        let (topic, payload) = tower
+            .create_actuator_topic(ActuatorName::Pump, ActuatorData::Boolean(true))
+            .unwrap();
+        assert_eq!(topic, "tower/1/control/pump");
+        assert_eq!(payload, "on");
+    }
+
+    #[test]
+    fn test_actuator_parse() {
+        let (topic, payload) =
+            Actuators::create_topic(ActuatorName::Pump, ActuatorData::Boolean(false)).unwrap();
+        assert_eq!(topic, "control/pump");
+        assert_eq!(payload, "off");
     }
 }

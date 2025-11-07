@@ -4,7 +4,10 @@ use aeroponics::*;
 use clap::Parser;
 use rumqttc::{AsyncClient, Event, Incoming, MqttOptions, QoS};
 use std::time::Duration;
-use tokio::{task, time};
+use tokio::{
+    io::{self, AsyncBufReadExt, BufReader},
+    sync::mpsc,
+};
 
 #[derive(Parser, Debug)]
 #[command(version, about, long_about = None)]
@@ -14,82 +17,6 @@ struct Args {
 
     #[arg(short, long, default_value_t = 1883)]
     port: u16,
-}
-
-fn parse_topic(topic: &str, payload: &str) -> Option<(u16, SensorName, SensorData)> {
-    let parts: Vec<_> = topic.split('/').collect();
-
-    if parts.len() == 4 && parts[0] == "tower" && parts[2] == "sensor" {
-        let id = parts[1].parse::<u16>().ok()?;
-        let sensor_name = parts[3];
-        match sensor_name {
-            "temp-lower" => Some((
-                id,
-                SensorName::TemperatureLower,
-                SensorData::Numeric(payload.parse().ok()?),
-            )),
-            "temp-upper" => Some((
-                id,
-                SensorName::TemperatureUpper,
-                SensorData::Numeric(payload.parse().ok()?),
-            )),
-            "humidity-lower" => Some((
-                id,
-                SensorName::HumidityLower,
-                SensorData::Numeric(payload.parse().ok()?),
-            )),
-            "humidity-upper" => Some((
-                id,
-                SensorName::HumidityUpper,
-                SensorData::Numeric(payload.parse().ok()?),
-            )),
-            "pressure" => Some((
-                id,
-                SensorName::Pressure,
-                SensorData::Numeric(payload.parse().ok()?),
-            )),
-            "ec" => Some((
-                id,
-                SensorName::Ec,
-                SensorData::Numeric(payload.parse().ok()?),
-            )),
-            "ph" => Some((
-                id,
-                SensorName::Ph,
-                SensorData::Numeric(payload.parse().ok()?),
-            )),
-            "water-level" => Some((
-                id,
-                SensorName::WaterLevel,
-                SensorData::Numeric(payload.parse().ok()?),
-            )),
-            "pump" => match payload.to_lowercase().as_str() {
-                "on" => Some((id, SensorName::PumpRelay, SensorData::Boolean(true))),
-                "off" => Some((id, SensorName::PumpRelay, SensorData::Boolean(false))),
-                _ => None,
-            },
-            "solenoid" => match payload.to_lowercase().as_str() {
-                "open" => Some((id, SensorName::PumpSolenoid, SensorData::Boolean(true))),
-                "closed" => Some((id, SensorName::PumpSolenoid, SensorData::Boolean(false))),
-                _ => None,
-            },
-            _ => None,
-        }
-    } else {
-        None
-    }
-}
-
-fn update_towers(towers: &mut Towers, topic: &str, payload: &str) {
-    if let Some((id, sensor_name, sensor_data)) = parse_topic(topic, payload) {
-        if let Some(tower) = towers.get_by_id_mut(id) {
-            tower.update_sensor(sensor_name, sensor_data);
-        } else {
-            let mut new_tower = Tower::new(id);
-            new_tower.update_sensor(sensor_name, sensor_data);
-            towers.add_tower(new_tower);
-        }
-    }
 }
 
 #[tokio::main]
@@ -106,49 +33,68 @@ async fn main() {
         .await
         .unwrap();
 
+    let (cmd_tx, mut cmd_rx) = mpsc::channel::<String>(10);
+
     let mut towers = Towers::new();
 
-    loop {
-        match eventloop.poll().await {
-            Ok(Event::Incoming(Incoming::Publish(p))) => {
-                let payload = String::from_utf8_lossy(&p.payload);
-                update_towers(&mut towers, &p.topic, &payload);
-                println!("{}", towers);
-            }
-            Ok(_) => {}
-            Err(e) => {
-                eprintln!("Error: {:?}", e);
-                break;
+    tokio::spawn(async move {
+        loop {
+            match eventloop.poll().await {
+                Ok(Event::Incoming(Incoming::Publish(p))) => {
+                    let payload = String::from_utf8_lossy(&p.payload);
+                    towers.update(&p.topic, &payload);
+                    println!("{}", towers);
+                }
+                Ok(_) => {}
+                Err(e) => {
+                    eprintln!("Error: {:?}", e);
+                    break;
+                }
             }
         }
+    });
+
+    let cmd_tx2 = cmd_tx.clone();
+    tokio::spawn(async move {
+        let stdin = io::stdin();
+        let mut reader = BufReader::new(stdin).lines();
+        while let Ok(Some(line)) = reader.next_line().await {
+            let _ = cmd_tx2.send(line).await;
+        }
+    });
+
+    while let Some(cmd) = cmd_rx.recv().await {
+        println!("User typed: {}", cmd);
+        handle_command(&cmd, &client).await;
     }
 }
 
-#[cfg(test)]
-mod tests {
-    use super::*;
+/// Command format: 'set <tower_id> <actuator> <state>'
+/// Example: 'set 1 pump on'
+/// Publishes to topic 'tower/<tower_id>/control/<actuator>' with payload '<state>'
+/// Example topic: 'tower/1/control/pump' payload: 'on'
+async fn handle_command(towers: &Towers, cmd: &str, client: &AsyncClient) {
+    let cmd_lower = cmd.to_lowercase();
+    let parts: Vec<&str> = cmd_lower.split_whitespace().collect();
+    if parts.len() == 4 && parts[0] == "set" {
+        let tower_id = parts[1];
+        let actuator = parts[2];
+        let state = parts[3];
 
-    #[test]
-    fn test_parse_topic_numeric() {
-        let topic = "tower/1/sensor/temp-lower";
-        let payload = "23.5";
-        let result = parse_topic(topic, payload);
-        assert!(result.is_some());
-        let (id, sensor_name, sensor_data) = result.unwrap();
-        assert_eq!(id, 1);
-        assert_eq!(sensor_name, SensorName::TemperatureLower);
-        assert_eq!(sensor_data, SensorData::Numeric(23.5));
-    }
-
-    #[test]
-    fn test_parse_topic_boolean() {
-        let topic = "tower/2/sensor/pump";
-        let payload = "on";
-        let result = parse_topic(topic, payload);
-        assert!(result.is_some());
-        let (id, sensor_name, sensor_data) = result.unwrap();
-        assert_eq!(id, 2);
-        assert_eq!(sensor_name, SensorName::PumpRelay);
-        assert_eq!(sensor_data, SensorData::Boolean(true));
+        if let Some(tower) = towers.get_by_id_mut(tower_id.parse().unwrap()) {
+            // TODO
+        } else {
+            println!("Tower with ID {} not found.", tower_id);
+            return;
+        }
+        match client
+            .publish(topic.clone(), QoS::AtLeastOnce, false, payload)
+            .await
+        {
+            Ok(_) => println!("Published command to {}: {}", topic, payload),
+            Err(e) => eprintln!("Failed to publish command: {:?}", e),
+        }
+    } else {
+        println!("Unknown command format. Use: set <tower_id> <actuator> <state>");
     }
 }
