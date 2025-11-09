@@ -1,13 +1,13 @@
 <mxfile host="app.diagrams.net" agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36" version="28.2.9">
   <diagram name="Page-1" id="JW7qu09D1SfKynQFA-T6">
-    <mxGraphModel dx="1107" dy="784" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+    <mxGraphModel dx="439" dy="589" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
         <mxCell id="AZ-IEMM_sDaHlknkRt6h-13" value="&amp;lt;&amp;lt;trait&amp;gt;&amp;gt;&lt;br&gt;&lt;b&gt;Towers&lt;/b&gt;" style="swimlane;fontStyle=0;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=40;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;html=1;whiteSpace=wrap;" parent="1" vertex="1">
           <mxGeometry x="185.25" y="100" width="481.25" height="140" as="geometry" />
         </mxCell>
-        <mxCell id="AZ-IEMM_sDaHlknkRt6h-14" value="+get_or_add_tower(int) -&amp;gt; &amp;amp;Tower;&lt;div&gt;+get_sensor(int, SensorName) -&amp;gt; &amp;amp;Sensor&lt;/div&gt;&lt;div&gt;+get_actuator(int, ActuatorName) -&amp;gt; &amp;amp;Actuator;&lt;/div&gt;&lt;div&gt;+get_actuator_mqtt(int, ActuatorName, ActuatorData) -&amp;gt; &amp;amp;str;&lt;/div&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;" parent="AZ-IEMM_sDaHlknkRt6h-13" vertex="1">
+        <mxCell id="AZ-IEMM_sDaHlknkRt6h-14" value="+get_or_add_tower(int) -&amp;gt; &amp;amp;Tower;&lt;div&gt;+get_sensor(int, SensorName) -&amp;gt; Option&amp;lt;&amp;amp;Sensor&amp;gt;&lt;/div&gt;&lt;div&gt;+get_actuator(int, ActuatorName) -&amp;gt; Option&amp;lt;&amp;amp;Actuator&amp;gt;;&lt;/div&gt;&lt;div&gt;+get_actuator_mqtt(int, ActuatorName, ActuatorData) -&amp;gt; Option&amp;lt;&amp;amp;str&amp;gt;;&lt;/div&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;" parent="AZ-IEMM_sDaHlknkRt6h-13" vertex="1">
           <mxGeometry y="40" width="481.25" height="100" as="geometry" />
         </mxCell>
         <mxCell id="9dODyVrEf7mqgM21iY9D-5" value="" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=12;startSize=8;endSize=8;endArrow=diamondThin;endFill=1;" edge="1" parent="1" source="AZ-IEMM_sDaHlknkRt6h-16" target="AZ-IEMM_sDaHlknkRt6h-14">
@@ -16,13 +16,13 @@
         <mxCell id="AZ-IEMM_sDaHlknkRt6h-16" value="&amp;lt;&amp;lt;trait&amp;gt;&amp;gt;&lt;br&gt;&lt;b&gt;Tower&lt;/b&gt;" style="swimlane;fontStyle=0;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=40;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;html=1;whiteSpace=wrap;" parent="1" vertex="1">
           <mxGeometry x="184" y="300" width="482.5" height="120" as="geometry" />
         </mxCell>
-        <mxCell id="AZ-IEMM_sDaHlknkRt6h-17" value="&lt;div&gt;+get_sensor(SensorName) -&amp;gt; &amp;amp;Sensor&lt;/div&gt;&lt;div&gt;+get_actuator(ActuatorName) -&amp;gt; &amp;amp;Actuator;&lt;/div&gt;&lt;div&gt;+get_actuator_mqtt(ActuatorName, ActuatorData) -&amp;gt;&amp;amp;str;&lt;/div&gt;&lt;div&gt;+get_actuator_mqtt(int, ActuatorName, ActuatorData) -&amp;gt; &amp;amp;str;&lt;/div&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;" parent="AZ-IEMM_sDaHlknkRt6h-16" vertex="1">
+        <mxCell id="AZ-IEMM_sDaHlknkRt6h-17" value="&lt;div&gt;+get_sensor(SensorName) -&amp;gt; Option&amp;lt;&amp;amp;Sensor&amp;gt;&lt;/div&gt;&lt;div&gt;+get_actuator(ActuatorName) -&amp;gt; Option&amp;lt;&amp;amp;Actuator&amp;gt;;&lt;/div&gt;&lt;div&gt;+get_actuator_mqtt(ActuatorName, ActuatorData) -&amp;gt;Option&amp;lt;&amp;amp;str&amp;gt;;&lt;/div&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;" parent="AZ-IEMM_sDaHlknkRt6h-16" vertex="1">
           <mxGeometry y="40" width="482.5" height="80" as="geometry" />
         </mxCell>
         <mxCell id="AZ-IEMM_sDaHlknkRt6h-18" value="&amp;lt;&amp;lt;trait&amp;gt;&amp;gt;&lt;br&gt;&lt;b&gt;Sensor&lt;/b&gt;" style="swimlane;fontStyle=0;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=40;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;html=1;whiteSpace=wrap;" parent="1" vertex="1">
           <mxGeometry x="80" y="480" width="340" height="90" as="geometry" />
         </mxCell>
-        <mxCell id="AZ-IEMM_sDaHlknkRt6h-19" value="+update_sensor(SensorData);" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;" parent="AZ-IEMM_sDaHlknkRt6h-18" vertex="1">
+        <mxCell id="AZ-IEMM_sDaHlknkRt6h-19" value="+update_data(SensorData);&lt;div&gt;+read_data() -&amp;gt; SensorData;&lt;/div&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;" parent="AZ-IEMM_sDaHlknkRt6h-18" vertex="1">
           <mxGeometry y="40" width="340" height="50" as="geometry" />
         </mxCell>
         <mxCell id="9dODyVrEf7mqgM21iY9D-6" value="" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=12;startSize=8;endSize=8;endArrow=diamondThin;endFill=1;" edge="1" parent="1" source="AZ-IEMM_sDaHlknkRt6h-20" target="AZ-IEMM_sDaHlknkRt6h-17">
@@ -49,10 +49,10 @@
         <mxCell id="9dODyVrEf7mqgM21iY9D-16" value="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;fontSize=16;" vertex="1" parent="1">
           <mxGeometry x="470" y="430" width="10" height="20" as="geometry" />
         </mxCell>
-        <mxCell id="9dODyVrEf7mqgM21iY9D-19" value="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;fontSize=16;" vertex="1" parent="1">
+        <mxCell id="9dODyVrEf7mqgM21iY9D-19" value="..." style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;fontSize=16;" vertex="1" parent="1">
           <mxGeometry x="550" y="460" width="10" height="20" as="geometry" />
         </mxCell>
-        <mxCell id="9dODyVrEf7mqgM21iY9D-20" value="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;fontSize=16;" vertex="1" parent="1">
+        <mxCell id="9dODyVrEf7mqgM21iY9D-20" value="..." style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;fontSize=16;" vertex="1" parent="1">
           <mxGeometry x="300" y="460" width="10" height="20" as="geometry" />
         </mxCell>
       </root>
