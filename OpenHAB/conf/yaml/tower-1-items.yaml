@@ -6,13 +6,6 @@ items:
     label: Tower 1
     tags:
       - Location
-  tower_1_lower:
-    type: Group
-    label: Lower
-    groups:
-      - tower_1
-    tags:
-      - Equipment
   tower_1_upper:
     type: Group
     label: Upper
@@ -46,28 +39,6 @@ items:
       - Measurement
       - Temperature
     channel: mqtt:topic:tower-1-upper-temp:tower-1-upper-temp
-  tower_1_lower_humidity:
-    type: Number
-    dimension: Dimensionless
-    label: Lower Humidity
-    icon: humidity
-    unit: '%'
-    groups:
-      - tower_1_lower
-    tags:
-      - Measurement
-    channel: mqtt:topic:tower-1-lower-humidity:tower-1-lower-humidity
-  tower_1_lower_temp:
-    type: Number
-    dimension: Temperature
-    label: Lower Temperature
-    icon: temperature
-    unit: °C
-    groups:
-      - tower_1_lower
-    tags:
-      - Measurement
-    channel: mqtt:topic:tower-1-lower-temp:tower-1-lower-temp
   tower_1_upper_humidity:
     type: Number
     dimension: Dimensionless
@@ -142,4 +113,3 @@ items:
     tags:
       - Switch
     channel: mqtt:topic:tower-1-solenoid:tower-1-solenoid
-
