@@ -1,0 +1,7 @@
+version: 1
+things:
+  mqtt:broker:mosquitto:
+    isBridge: true
+    config:
+      host: aeropi
+
