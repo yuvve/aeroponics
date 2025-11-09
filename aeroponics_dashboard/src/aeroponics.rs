@@ -1,3 +1,4 @@
+use std::collections::HashMap;
 use std::fmt;
 
 #[derive(Debug, PartialEq)]
@@ -31,7 +32,30 @@ pub enum ActuatorData {
     Boolean(bool),
 }
 
-pub struct Towers(Vec<Tower>);
+pub struct Towers(HashMap<u16, Tower>);
+
+impl Towers {
+    pub fn new() -> Self {
+        Self(HashMap::new())
+    }
+    pub fn add_tower(&mut self, tower: Tower) {
+        self.0.insert(tower.id, tower);
+    }
+    pub fn get_by_id_mut(&mut self, id: u16) -> Option<&mut Tower> {
+        self.0.get_mut(&id)
+    }
+    pub fn update(&mut self, topic: &str, payload: &str) {
+        if let Some((id, sensor_name, sensor_data)) = Tower::parse_sensor_topic(topic, payload) {
+            if let Some(tower) = self.get_by_id_mut(id) {
+                tower.update_sensor(sensor_name, sensor_data);
+            } else {
+                let mut new_tower = Tower::new(id);
+                new_tower.update_sensor(sensor_name, sensor_data);
+                self.add_tower(new_tower);
+            }
+        }
+    }
+}
 
 pub struct Tower {
     id: u16,
@@ -52,100 +76,10 @@ pub struct Sensors {
     pump_solenoid: Option<bool>,
 }
 
-pub struct Actuators {}
-
-impl Towers {
-    pub fn new() -> Self {
-        Towers(Vec::new())
-    }
-    pub fn add_tower(&mut self, tower: Tower) {
-        self.0.push(tower);
-    }
-    pub fn get_by_id_mut(&mut self, id: u16) -> Option<&mut Tower> {
-        self.0.iter_mut().find(|tower| tower.id == id)
-    }
-    pub fn update(&mut self, topic: &str, payload: &str) {
-        if let Some((id, sensor_name, sensor_data)) = Tower::parse_sensor_topic(topic, payload) {
-            if let Some(tower) = self.get_by_id_mut(id) {
-                tower.update_sensor(sensor_name, sensor_data);
-            } else {
-                let mut new_tower = Tower::new(id);
-                new_tower.update_sensor(sensor_name, sensor_data);
-                self.add_tower(new_tower);
-            }
-        }
-    }
-}
-
-impl fmt::Display for Towers {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        for tower in &self.0 {
-            writeln!(f, "Tower ID {}: {}", tower.id, tower.sensors)?;
-        }
-        Ok(())
-    }
-}
-
-impl Tower {
-    pub fn new(id: u16) -> Self {
-        Tower {
-            id,
-            sensors: Sensors::new(),
-            actuators: Actuators::new(),
-        }
-    }
-
-    pub fn update_sensor(&mut self, sensor_name: SensorName, value: SensorData) {
-        self.sensors.update_sensor(sensor_name, value);
-    }
-
-    pub fn parse_sensor_topic(topic: &str, payload: &str) -> Option<(u16, SensorName, SensorData)> {
-        let parts: Vec<_> = topic.split('/').collect();
-
-        if parts.len() == 4 && parts[0] == "tower" && parts[2] == "sensor" {
-            let id = parts[1].parse::<u16>().ok()?;
-            let name = parts[3];
-            if let Some((sensor_name, sensor_data)) = Sensors::parse(name, payload) {
-                Some((id, sensor_name, sensor_data))
-            } else {
-                None
-            }
-        } else {
-            None
-        }
-    }
-
-    pub fn create_actuator_topic(
-        &self,
-        actuator_name: ActuatorName,
-        actuator_data: ActuatorData,
-    ) -> Result<(String, String), ()> {
-        if let Ok((actuator_topic, payload)) = Actuators::create_topic(actuator_name, actuator_data)
-        {
-            let topic = format!("tower/{}/{}", self.id, actuator_topic);
-            Ok((topic, payload))
-        } else {
-            Err(())
-        }
-    }
-}
-
 impl Sensors {
     pub fn new() -> Self {
-        Sensors {
-            temperature_lower: None,
-            temperature_upper: None,
-            humidity_lower: None,
-            humidity_upper: None,
-            pressure: None,
-            ec: None,
-            ph: None,
-            water_level: None,
-            pump_relay: None,
-            pump_solenoid: None,
-        }
+        Self::default()
     }
-
     pub fn update_sensor(&mut self, sensor_name: SensorName, value: SensorData) {
         match sensor_name {
             SensorName::TemperatureLower => self.temperature_lower = Some(value.into()),
@@ -205,24 +139,6 @@ impl Sensors {
     }
 }
 
-impl From<SensorData> for f32 {
-    fn from(data: SensorData) -> Self {
-        match data {
-            SensorData::Numeric(val) => val,
-            _ => panic!("Expected numeric sensor data"),
-        }
-    }
-}
-
-impl From<SensorData> for bool {
-    fn from(data: SensorData) -> Self {
-        match data {
-            SensorData::Boolean(val) => val,
-            _ => panic!("Expected boolean sensor data"),
-        }
-    }
-}
-
 impl fmt::Display for Sensors {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         fn fmt_opt<T: fmt::Display>(val: &Option<T>) -> String {
@@ -259,9 +175,11 @@ impl fmt::Display for Sensors {
     }
 }
 
+pub struct Actuators {}
+
 impl Actuators {
     pub fn new() -> Self {
-        Actuators {}
+        Self::default()
     }
     pub fn create_topic(
         actuator_name: ActuatorName,
@@ -279,6 +197,81 @@ impl Actuators {
                 Ok((topic, payload))
             }
             _ => Err(()),
+        }
+    }
+}
+
+impl fmt::Display for Towers {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        for tower in &self.0 {
+            writeln!(f, "Tower ID {}: {}", tower.id, tower.sensors)?;
+        }
+        Ok(())
+    }
+}
+
+impl Tower {
+    pub fn new(id: u16) -> Self {
+        Tower {
+            id,
+            sensors: Sensors::new(),
+            actuators: Actuators::new(),
+        }
+    }
+
+    pub fn update_sensor(&mut self, sensor_name: SensorName, value: SensorData) {
+        self.sensors.update_sensor(sensor_name, value);
+    }
+
+    pub fn parse_sensor_topic(topic: &str, payload: &str) -> Option<(u16, SensorName, SensorData)> {
+        let parts: Vec<_> = topic.split('/').collect();
+
+        if parts.len() == 4 && parts[0] == "tower" && parts[2] == "sensor" {
+            let id = parts[1].parse::<u16>().ok()?;
+            let name = parts[3];
+            if let Some((sensor_name, sensor_data)) = Sensors::parse(name, payload) {
+                Some((id, sensor_name, sensor_data))
+            } else {
+                None
+            }
+        } else {
+            None
+        }
+    }
+
+    pub fn build_actuator_mqtt(
+        &self,
+        actuator_name: ActuatorName,
+        actuator_data: ActuatorData,
+    ) -> Result<(String, String), ()> {
+        if let Ok((actuator_topic, payload)) = Actuators::create_topic(actuator_name, actuator_data)
+        {
+            let topic = format!("tower/{}/{}", self.id, actuator_topic);
+            Ok((topic, payload))
+        } else {
+            Err(())
+        }
+    }
+}
+
+impl TryFrom<SensorData> for f32 {
+    type Error = &'static str;
+    fn try_from(data: SensorData) -> Result<Self, Self::Error> {
+        if let SensorData::Numeric(v) = data {
+            Ok(v)
+        } else {
+            Err("expected numeric")
+        }
+    }
+}
+
+impl TryFrom<SensorData> for bool {
+    type Error = &'static str;
+    fn try_from(data: SensorData) -> Result<Self, Self::Error> {
+        if let SensorData::Boolean(v) = data {
+            Ok(v)
+        } else {
+            Err("expected boolean")
         }
     }
 }
@@ -374,7 +367,7 @@ mod tests {
     fn test_create_actuator_topic() {
         let tower = Tower::new(1);
         let (topic, payload) = tower
-            .create_actuator_topic(ActuatorName::Pump, ActuatorData::Boolean(true))
+            .build_actuator_mqtt(ActuatorName::Pump, ActuatorData::Boolean(true))
             .unwrap();
         assert_eq!(topic, "tower/1/control/pump");
         assert_eq!(payload, "on");

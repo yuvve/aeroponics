@@ -1,4 +1,5 @@
 mod aeroponics;
+mod aeroponics2;
 
 use aeroponics::*;
 use clap::Parser;
@@ -82,7 +83,7 @@ async fn handle_command(towers: &Towers, cmd: &str, client: &AsyncClient) {
         let state = parts[3];
 
         if let Some(tower) = towers.get_by_id_mut(tower_id.parse().unwrap()) {
-            // TODO
+            let actuator_topic = tower.build_actuator_mqtt(actuator);
         } else {
             println!("Tower with ID {} not found.", tower_id);
             return;
