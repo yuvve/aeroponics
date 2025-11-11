@@ -73,21 +73,30 @@ things:
         kind: state
         config:
           stateTopic: tower/1/sensor/pressure
-  mqtt:topic:tower-1-solenoid:
-    label: Tower 1 Pump Solenoid
+  mqtt:topic:tower-1-solenoid-period:
+    label: Tower 1 Pump Solenoid Period
     bridge: mqtt:broker:mosquitto
     channels:
       tower-1-solenoid:
-        type: switch
-        label: Solenoid
+        type: number
+        label: Solenoid Period
         kind: state
         config:
-          stateTopic: tower/1/sensor/solenoid
-          commandTopic: tower/1/control/solenoid
-          on: "ON"
-          off: "OFF"
-  mqtt:topic:tower-1-pump:
-    label: Tower 1 Pump Relay
+          stateTopic: tower/1/sensor/solenoid-period
+          commandTopic: tower/1/control/solenoid-period
+  mqtt:topic:tower-1-solenoid-duty-cycle:
+    label: Tower 1 Pump Solenoid Duty Cycle
+    bridge: mqtt:broker:mosquitto
+    channels:
+      tower-1-solenoid:
+        type: number
+        label: Solenoid Duty Cycle
+        kind: state
+        config:
+          stateTopic: tower/1/sensor/solenoid-duty-cycle
+          commandTopic: tower/1/control/solenoid-duty-cycle
+  mqtt:topic:tower-1-pump-power:
+    label: Tower 1 Pump Power
     bridge: mqtt:broker:mosquitto
     channels:
       tower-1-pump:
@@ -95,7 +104,7 @@ things:
         label: Pump
         kind: state
         config:
-          stateTopic: tower/1/sensor/pump
-          commandTopic: tower/1/control/pump
+          stateTopic: tower/1/sensor/pump-power
+          commandTopic: tower/1/control/pump-power
           on: "ON"
           off: "OFF"
