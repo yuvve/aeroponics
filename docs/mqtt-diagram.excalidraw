@@ -1,7 +1,7 @@
 {
   "type": "excalidraw",
   "version": 2,
-  "source": "https://math.preview.excalidraw.com",
+  "source": "https://excalidraw.com",
   "elements": [
     {
       "type": "text",
@@ -81,7 +81,8 @@
       "scale": [
         1,
         1
-      ]
+      ],
+      "crop": null
     },
     {
       "type": "image",
@@ -122,7 +123,8 @@
       "scale": [
         1,
         1
-      ]
+      ],
+      "crop": null
     },
     {
       "type": "text",
@@ -205,7 +207,8 @@
           -320.83333333333326,
           5.684341886080802e-14
         ]
-      ]
+      ],
+      "polygon": false
     },
     {
       "type": "ellipse",
@@ -388,7 +391,8 @@
           80,
           0
         ]
-      ]
+      ],
+      "polygon": false
     },
     {
       "type": "line",
@@ -435,7 +439,8 @@
           80,
           -140
         ]
-      ]
+      ],
+      "polygon": false
     },
     {
       "type": "text",
@@ -519,7 +524,8 @@
       "scale": [
         1,
         1
-      ]
+      ],
+      "crop": null
     },
     {
       "type": "line",
@@ -562,7 +568,8 @@
           -320.83333333333326,
           5.684341886080802e-14
         ]
-      ]
+      ],
+      "polygon": false
     },
     {
       "type": "ellipse",
@@ -675,7 +682,8 @@
           80,
           0
         ]
-      ]
+      ],
+      "polygon": false
     },
     {
       "type": "line",
@@ -722,7 +730,8 @@
           80,
           -140
         ]
-      ]
+      ],
+      "polygon": false
     },
     {
       "type": "line",
@@ -769,7 +778,8 @@
           80,
           -140
         ]
-      ]
+      ],
+      "polygon": false
     },
     {
       "type": "rectangle",
@@ -1306,7 +1316,8 @@
           80,
           -189.99999999999997
         ]
-      ]
+      ],
+      "polygon": false
     },
     {
       "type": "line",
@@ -1353,7 +1364,8 @@
           77.91664123535156,
           -171.25
         ]
-      ]
+      ],
+      "polygon": false
     },
     {
       "type": "line",
@@ -1400,7 +1412,8 @@
           72.70843505859375,
           -140
         ]
-      ]
+      ],
+      "polygon": false
     },
     {
       "type": "text",
@@ -1534,7 +1547,8 @@
           0,
           0
         ]
-      ]
+      ],
+      "polygon": false
     },
     {
       "type": "rectangle",
@@ -1632,7 +1646,8 @@
           0,
           0
         ]
-      ]
+      ],
+      "polygon": false
     },
     {
       "type": "line",
@@ -1678,7 +1693,8 @@
           470.9125620627776,
           0
         ]
-      ]
+      ],
+      "polygon": false
     },
     {
       "type": "text",
@@ -1828,7 +1844,8 @@
       "scale": [
         1,
         1
-      ]
+      ],
+      "crop": null
     },
     {
       "type": "text",
@@ -1906,7 +1923,8 @@
       "scale": [
         1,
         1
-      ]
+      ],
+      "crop": null
     },
     {
       "type": "rectangle",
@@ -2129,7 +2147,8 @@
           256.80549621582054
         ]
       ],
-      "elbowed": true
+      "elbowed": true,
+      "fixedSegments": null
     },
     {
       "type": "arrow",
@@ -2197,7 +2216,8 @@
           688.8891092936202
         ]
       ],
-      "elbowed": true
+      "elbowed": true,
+      "fixedSegments": null
     },
     {
       "type": "arrow",
@@ -2265,12 +2285,13 @@
           -648.8891093504064
         ]
       ],
-      "elbowed": true
+      "elbowed": true,
+      "fixedSegments": null
     },
     {
       "type": "text",
-      "version": 1101,
-      "versionNonce": 2105617661,
+      "version": 1113,
+      "versionNonce": 256186128,
       "index": "b1a",
       "isDeleted": false,
       "id": "9g3xRogIvKtPgcctBjpjZ",
@@ -2280,27 +2301,27 @@
       "roughness": 0,
       "opacity": 100,
       "angle": 0,
-      "x": 629.7000117827214,
+      "x": 624.6333308745183,
       "y": 559.1893064571568,
       "strokeColor": "#1971c2",
       "backgroundColor": "transparent",
-      "width": 758.2666625976562,
+      "width": 768.4000244140625,
       "height": 178.7501525878908,
       "seed": 1856526888,
       "groupIds": [],
       "frameId": null,
       "roundness": null,
       "boundElements": [],
-      "updated": 1762863853251,
+      "updated": 1762865147641,
       "link": null,
       "locked": false,
       "fontSize": 47.66670735677088,
       "fontFamily": 6,
-      "text": "tower/1/sensor/solenoid-period\ntower/1/sensor/solenoid-duty-cycle\ntower/1/sensor/pump-power",
+      "text": "tower/1/control/solenoid-period\ntower/1/control/solenoid-duty-cycle\ntower/1/control/pump-power",
       "textAlign": "center",
       "verticalAlign": "top",
       "containerId": null,
-      "originalText": "tower/1/sensor/solenoid-period\ntower/1/sensor/solenoid-duty-cycle\ntower/1/sensor/pump-power",
+      "originalText": "tower/1/control/solenoid-period\ntower/1/control/solenoid-duty-cycle\ntower/1/control/pump-power",
       "autoResize": true,
       "lineHeight": 1.25
     },
@@ -2439,75 +2460,75 @@
     },
     {
       "type": "text",
-      "version": 1146,
-      "versionNonce": 601249853,
-      "index": "b1l",
+      "version": 1164,
+      "versionNonce": 399025936,
+      "index": "b1n",
       "isDeleted": false,
-      "id": "Ircb9EuLhmDnepWYKasAk",
+      "id": "c-t_8yiFsT4kuzc9Em4Rb",
       "fillStyle": "solid",
       "strokeWidth": 4,
       "strokeStyle": "solid",
       "roughness": 0,
       "opacity": 100,
       "angle": 0,
-      "x": 2673.633932517417,
-      "y": 237.44539503572935,
+      "x": 2640.7195423076005,
+      "y": 227.7633684814674,
       "strokeColor": "#1971c2",
       "backgroundColor": "transparent",
-      "width": 758.2666625976562,
+      "width": 768.4000244140625,
       "height": 178.7501525878908,
-      "seed": 1637823731,
+      "seed": 1055689488,
       "groupIds": [],
       "frameId": null,
       "roundness": null,
       "boundElements": [],
-      "updated": 1762863852654,
+      "updated": 1762865156146,
       "link": null,
       "locked": false,
       "fontSize": 47.66670735677088,
       "fontFamily": 6,
-      "text": "tower/1/sensor/solenoid-period\ntower/1/sensor/solenoid-duty-cycle\ntower/1/sensor/pump-power",
+      "text": "tower/1/control/solenoid-period\ntower/1/control/solenoid-duty-cycle\ntower/1/control/pump-power",
       "textAlign": "center",
       "verticalAlign": "top",
       "containerId": null,
-      "originalText": "tower/1/sensor/solenoid-period\ntower/1/sensor/solenoid-duty-cycle\ntower/1/sensor/pump-power",
+      "originalText": "tower/1/control/solenoid-period\ntower/1/control/solenoid-duty-cycle\ntower/1/control/pump-power",
       "autoResize": true,
       "lineHeight": 1.25
     },
     {
       "type": "text",
-      "version": 1101,
-      "versionNonce": 320683805,
-      "index": "b1m",
+      "version": 1171,
+      "versionNonce": 176672016,
+      "index": "b1o",
       "isDeleted": false,
-      "id": "Hg9s8dEMJNFvOciLsuB11",
+      "id": "Ys_jxAUyQTRorpqB_VPag",
       "fillStyle": "solid",
       "strokeWidth": 4,
       "strokeStyle": "solid",
       "roughness": 0,
       "opacity": 100,
       "angle": 0,
-      "x": 2460.5143525009807,
-      "y": 1461.301832166986,
+      "x": 2472.141491918997,
+      "y": 1478.0505755302777,
       "strokeColor": "#1971c2",
       "backgroundColor": "transparent",
-      "width": 758.2666625976562,
+      "width": 768.4000244140625,
       "height": 178.7501525878908,
-      "seed": 713638867,
+      "seed": 133472016,
       "groupIds": [],
       "frameId": null,
       "roundness": null,
       "boundElements": [],
-      "updated": 1762863851973,
+      "updated": 1762865161954,
       "link": null,
       "locked": false,
       "fontSize": 47.66670735677088,
       "fontFamily": 6,
-      "text": "tower/1/sensor/solenoid-period\ntower/1/sensor/solenoid-duty-cycle\ntower/1/sensor/pump-power",
+      "text": "tower/1/control/solenoid-period\ntower/1/control/solenoid-duty-cycle\ntower/1/control/pump-power",
       "textAlign": "center",
       "verticalAlign": "top",
       "containerId": null,
-      "originalText": "tower/1/sensor/solenoid-period\ntower/1/sensor/solenoid-duty-cycle\ntower/1/sensor/pump-power",
+      "originalText": "tower/1/control/solenoid-period\ntower/1/control/solenoid-duty-cycle\ntower/1/control/pump-power",
       "autoResize": true,
       "lineHeight": 1.25
     }
@@ -2516,7 +2537,8 @@
     "gridSize": 20,
     "gridStep": 5,
     "gridModeEnabled": false,
-    "viewBackgroundColor": "#ffffff"
+    "viewBackgroundColor": "#ffffff",
+    "lockedMultiSelections": {}
   },
   "files": {
     "a994fa5c0e0acd28721115c9475060f69390ed83": {
