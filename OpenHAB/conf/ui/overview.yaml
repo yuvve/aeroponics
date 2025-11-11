@@ -173,33 +173,32 @@ blocks:
                           - component: oh-slider-item
                             config:
                               label: true
-                              max: 100
+                              max: 10
                               min: 0
                               releaseOnly: true
                               scale: true
-                              step: 1
-                              title: Water Pressure Threshold (%)
-                              unit: "%"
+                              step: 0.1
+                              title: Water Pressure Threshold (bar)
+                              unit: bar
                           - component: oh-slider-item
                             config:
                               label: true
-                              max: 100
-                              min: 0
+                              max: 2.0
+                              min: 0.1
                               releaseOnly: true
                               scale: true
-                              step: 1
-                              title: pH Threshold (%)
-                              unit: "%"
+                              step: 0.1
+                              title: pH Tolerance
                           - component: oh-slider-item
                             config:
                               label: true
-                              max: 100
-                              min: 0
+                              max: 1.0
+                              min: 0.1
                               releaseOnly: true
                               scale: true
-                              step: 1
-                              title: EC Threshold (%)
-                              unit: "%"
+                              step: 0.1
+                              title: EC Tolerance (mS/cm)
+                              unit: "mS/cm"
         - component: oh-grid-row
           config: {}
           slots:
