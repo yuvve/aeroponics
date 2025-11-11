@@ -63,6 +63,7 @@ items:
     type: Number
     dimension: Dimensionless
     label: Electrical Conductivity
+    unit: "mS/cm"
     groups:
       - tower_1_solution
     tags:
