@@ -84,15 +84,15 @@ items:
     tags:
       - Measurement
     channel: mqtt:topic:tower-1-pressure:tower-1-pressure
-  tower_1_pump:
+  tower_1_pump_power:
     type: Switch
-    label: Pump
+    label: Pump Power
     icon: switch
     groups:
       - tower_1_pressure_system
     tags:
       - Switch
-    channel: mqtt:topic:tower-1-pump:tower-1-pump
+    channel: mqtt:topic:tower-1-pump-power:tower-1-pump-power
   tower_1_water_level:
     type: Number
     dimension: Length
@@ -104,12 +104,23 @@ items:
     tags:
       - Measurement
     channel: mqtt:topic:tower-1-water-level:tower-1-water-level
-  tower_1_solenoid:
-    type: Switch
-    label: Solenoid
-    icon: switch
+  tower_1_solenoid_period:
+    type: Number
+    label: Solenoid Period
+    icon: time
+    unit: s
     groups:
       - tower_1_pressure_system
     tags:
-      - Switch
-    channel: mqtt:topic:tower-1-solenoid:tower-1-solenoid
+      - Setpoint
+    channel: mqtt:topic:tower-1-solenoid-period:tower-1-solenoid-period
+  tower_1_solenoid_duty_cycle:
+    type: Number
+    label: Solenoid Duty Cycle
+    icon: time
+    unit: \%
+    groups:
+      - tower_1_pressure_system
+    tags:
+      - Setpoint
+    channel: mqtt:topic:tower-1-solenoid-duty-cycle:tower-1-solenoid-duty-cycle
