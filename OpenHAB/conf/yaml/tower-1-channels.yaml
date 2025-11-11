@@ -77,7 +77,7 @@ things:
     label: Tower 1 Pump Solenoid Period
     bridge: mqtt:broker:mosquitto
     channels:
-      tower-1-solenoid:
+      tower-1-solenoid-period:
         type: number
         label: Solenoid Period
         kind: state
@@ -88,7 +88,7 @@ things:
     label: Tower 1 Pump Solenoid Duty Cycle
     bridge: mqtt:broker:mosquitto
     channels:
-      tower-1-solenoid:
+      tower-1-solenoid-duty-cycle:
         type: number
         label: Solenoid Duty Cycle
         kind: state
@@ -99,7 +99,7 @@ things:
     label: Tower 1 Pump Power
     bridge: mqtt:broker:mosquitto
     channels:
-      tower-1-pump:
+      tower-1-pump-power:
         type: switch
         label: Pump
         kind: state
