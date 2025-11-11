@@ -38,7 +38,7 @@ blocks:
                           - tower_1_upper_humidity
                         iconUseState: false
                         item: tower_1_upper_humidity
-                        label: =items.tower_1_upper_humidity.state + " %"
+                        label: =items.tower_1_upper_humidity.state
                         title: Humidity
                         trendItem: tower_1_upper_humidity
         - component: oh-grid-row
