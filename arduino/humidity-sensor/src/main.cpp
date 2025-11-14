@@ -24,7 +24,7 @@ void loop()
 	unsigned long t = millis();
 	if(t - prev_t >= sample_t)
 	{
-		freq = counter/(t-prev_t)*1e3;
+		freq = (float)counter/(float)(t - prev_t)*1e3f;
 		counter = 0;
 		prev_t = t;
 		sprintf(buffer, "Frequency: %f\r\n", freq);
