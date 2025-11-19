@@ -41,3 +41,14 @@ sensor:
     update_interval: 10s
     state_class: measurement
     state_topic: "tower/1/sensor/water-level"
+
+  - platform: dallas_temp
+    address: 0x6e00000ff96afe28
+    name: "Lower temperature"
+    update_interval: 10s
+    state_class: measurement
+    state_topic: "tower/1/sensor/temp-lower"
+
+one_wire:
+  - platform: gpio
+    pin: GPIO4
