@@ -1,6 +1,14 @@
 esphome:
   name: water
   friendly_name: water
+  on_boot:
+    priority: -10
+    then:
+      - if:
+          condition:
+            lambda: "return id(pump_power);"
+          then:
+            - script.execute: solenoid_cycle
 
 esp32:
   board: esp32-s3-devkitc-1
@@ -28,11 +36,66 @@ wifi:
     ssid: "Water Fallback Hotspot"
     password: "nmP5a0yeWf6U"
 
-captive_portal:
+
+globals:
+  - id: pump_power
+    type: bool
+    restore_value: yes
+    initial_value: "false"
+
+  - id: solenoid_period
+    type: int
+    restore_value: yes
+    initial_value: "30"   # seconds
+
+  - id: solenoid_duty_cycle
+    type: int
+    restore_value: yes
+    initial_value: "50"   # percent
+  
+  - id: on_time_ms
+    type: int
+  
+  - id: off_time_ms
+    type: int
 
 mqtt:
   broker: !secret mqtt_broker_ip_address
-   
+  on_message:
+    - topic: tower/1/control/solenoid-period
+      then:
+        - lambda: |-
+            id(solenoid_period) = atoi(x.c_str());
+            ESP_LOGI("solenoid", "Updated period: %d s", id(solenoid_period));
+        - script.execute: solenoid_cycle   # restart with new settings
+
+    - topic: tower/1/control/solenoid-duty-cycle
+      then:
+        - lambda: |-
+            id(solenoid_duty_cycle) = atoi(x.c_str());
+            ESP_LOGI("solenoid", "Updated duty cycle: %d%%", id(solenoid_duty_cycle));
+        - script.execute: solenoid_cycle   # restart with new settings
+
+    - topic: tower/1/control/pump-power
+      then:
+        - lambda: |-
+            bool val = (x == "on");
+            id(pump_power) = val;
+            ESP_LOGI("solenoid", "Pump power set to: %s", val ? "ON" : "OFF");
+
+            // Restart script so it immediately obeys new state
+            if (val) {
+              id(solenoid_cycle).execute();
+            } else {
+              id(solenoid).turn_off();
+            }
+
+switch:
+  - platform: gpio
+    pin: GPIO21
+    id: solenoid
+    name: "Solenoid Valve"
+
 sensor:
   - platform: ultrasonic
     trigger_pin: GPIO1
@@ -47,8 +110,62 @@ sensor:
     name: "Lower temperature"
     update_interval: 10s
     state_class: measurement
-    state_topic: "tower/1/sensor/temp-lower"
+    state_topic: "tower/1/sensor/temp-water"
 
 one_wire:
   - platform: gpio
     pin: GPIO4
+
+script:
+  - id: solenoid_cycle
+    mode: restart
+    then:
+      - lambda: |-
+          if (!id(pump_power)) {
+            id(solenoid).turn_off();
+            return;
+          }
+
+      - lambda: |-
+          int period = id(solenoid_period);
+          int duty   = id(solenoid_duty_cycle);
+
+          int on_time  = (period * duty) / 100;
+          int off_time = period - on_time;
+
+          id(on_time_ms)  = on_time  * 1000;
+          id(off_time_ms) = off_time * 1000;
+
+          ESP_LOGI("solenoid", "ON: %d ms, OFF: %d ms", id(on_time_ms), id(off_time_ms));
+
+      - switch.turn_on: solenoid
+      - delay: !lambda |-
+          if (!id(pump_power)) return 0;  // stop immediately if power toggled off
+          return id(on_time_ms);
+
+      - switch.turn_off: solenoid
+      - delay: !lambda |-
+          if (!id(pump_power)) return 0;
+          return id(off_time_ms);
+
+      - if:
+          condition:
+            lambda: "return id(pump_power);"
+          then:
+            - script.execute: solenoid_cycle
+
+interval:
+  - interval: 1s
+    then:
+      - mqtt.publish:
+          topic: "tower/1/sensor/solenoid-period"
+          payload: id(solenoid_period)
+      - mqtt.publish: 
+          topic: "tower/1/sensor/solenoid-duty-cycle"
+          payload: id(solenoid_duty_cycle)  
+      - mqtt.publish: 
+          topic: "tower/1/sensor/pump-power"
+          payload: id(pump_power)
+          
+
+    
