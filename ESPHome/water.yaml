@@ -140,7 +140,7 @@ script:
 
       - switch.turn_on: solenoid
       - delay: !lambda |-
-          if (!id(pump_power)) return 0;  // stop immediately if power toggled off
+          if (!id(pump_power)) return 0; 
           return id(on_time_ms);
 
       - switch.turn_off: solenoid
@@ -159,13 +159,16 @@ interval:
     then:
       - mqtt.publish:
           topic: "tower/1/sensor/solenoid-period"
-          payload: id(solenoid_period)
-      - mqtt.publish: 
+          payload: !lambda |-
+            return to_string(id(solenoid_period));
+      - mqtt.publish:
           topic: "tower/1/sensor/solenoid-duty-cycle"
-          payload: id(solenoid_duty_cycle)  
-      - mqtt.publish: 
+          payload: !lambda |-
+            return to_string(id(solenoid_duty_cycle));
+      - mqtt.publish:
           topic: "tower/1/sensor/pump-power"
-          payload: id(pump_power)
+          payload: !lambda |-
+            return id(pump_power) ? "on" : "off";
           
 
     
