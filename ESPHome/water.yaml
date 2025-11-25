@@ -1,14 +1,6 @@
 esphome:
   name: water
   friendly_name: water
-  on_boot:
-    priority: -10
-    then:
-      - if:
-          condition:
-            lambda: "return id(pump_power);"
-          then:
-            - script.execute: solenoid_cycle
 
 esp32:
   board: esp32-s3-devkitc-1
@@ -36,23 +28,26 @@ wifi:
     ssid: "Water Fallback Hotspot"
     password: "nmP5a0yeWf6U"
 
-
 globals:
   - id: pump_power
     type: bool
-    restore_value: yes
+    restore_value: no
     initial_value: "false"
+  
+  - id: pump_pressure_delay_s
+    type: int
+    initial_value: "10"
 
-  - id: solenoid_period
+  - id: solenoid_period_s
     type: int
     restore_value: yes
-    initial_value: "30"   # seconds
+    initial_value: "30"
 
   - id: solenoid_duty_cycle
     type: int
     restore_value: yes
-    initial_value: "50"   # percent
-  
+    initial_value: "50"  
+    
   - id: on_time_ms
     type: int
   
@@ -65,9 +60,9 @@ mqtt:
     - topic: tower/1/control/solenoid-period
       then:
         - lambda: |-
-            id(solenoid_period) = atoi(x.c_str());
-            ESP_LOGI("solenoid", "Updated period: %d s", id(solenoid_period));
-        - script.execute: solenoid_cycle   # restart with new settings
+            id(solenoid_period_s) = atoi(x.c_str());
+            ESP_LOGI("solenoid", "Updated period: %d s", id(solenoid_period_s));
+        - script.execute: solenoid_cycle   
 
     - topic: tower/1/control/solenoid-duty-cycle
       then:
@@ -79,38 +74,75 @@ mqtt:
     - topic: tower/1/control/pump-power
       then:
         - lambda: |-
-            bool val = (x == "on");
-            id(pump_power) = val;
-            ESP_LOGI("solenoid", "Pump power set to: %s", val ? "ON" : "OFF");
+            bool new_state = (x == "on");
 
-            // Restart script so it immediately obeys new state
-            if (val) {
-              id(solenoid_cycle).execute();
-            } else {
+            // Do nothing if state is unchanged
+            if (new_state == id(pump_power)) {
+              ESP_LOGI("pump", "Pump-power command ignored (already %s)", new_state ? "ON" : "OFF");
+              return;
+            }
+
+            id(pump_power) = new_state;
+            ESP_LOGI("pump", "Pump power changed to: %s", new_state ? "ON" : "OFF");
+
+            if (new_state) {  // Power ON
+              id(pump).turn_on();
+              id(solenoid_cycle).stop();
+
+              const int delay_ms = id(pump_pressure_delay_s * 1000);
+              ESP_LOGI("pump", "Pressure build delay %d ms before solenoid cycle starts", delay_ms);
+
+              id(solenoid_cycle).set_timeout(delay_ms, []() {
+                if (id(pump_power)) {        
+                  ESP_LOGI("pump", "Starting solenoid cycle after pressure delay");
+                  id(solenoid_cycle).execute();
+                }
+              });
+
+            } else {  // Power OFF
+              id(solenoid_cycle).stop();
               id(solenoid).turn_off();
+              id(pump).turn_off();
             }
 
 switch:
   - platform: gpio
     pin: GPIO21
     id: solenoid
-    name: "Solenoid Valve"
+    name: "Solenoid valve relay"
+    inverted: True
+  - platform: gpio
+    id: pump
+    name: "Pump power relay"
+    pin: GPIO18
+    inverted: True
 
 sensor:
   - platform: ultrasonic
     trigger_pin: GPIO1
     echo_pin: GPIO2
-    name: "Ultrasonic Sensor"
+    name: "Water level"
+    id: water_level
     update_interval: 10s
     state_class: measurement
     state_topic: "tower/1/sensor/water-level"
 
   - platform: dallas_temp
-    address: 0x6e00000ff96afe28
-    name: "Lower temperature"
+    address: 0x6e00000ff96afe28 # GPIO4
+    name: "Water temperature"
+    id: water_temp
     update_interval: 10s
     state_class: measurement
     state_topic: "tower/1/sensor/temp-water"
+
+  - platform: adc
+    name: "Water pressure"
+    id: water_pressure
+    pin: GPIO3
+    update_interval: 10s
+    state_topic: "tower/1/sensor/water-pressure"
+    attenuation: auto
+    # Add calibration/convertion
 
 one_wire:
   - platform: gpio
@@ -127,7 +159,7 @@ script:
           }
 
       - lambda: |-
-          int period = id(solenoid_period);
+          int period = id(solenoid_period_s);
           int duty   = id(solenoid_duty_cycle);
 
           int on_time  = (period * duty) / 100;
@@ -155,12 +187,12 @@ script:
             - script.execute: solenoid_cycle
 
 interval:
-  - interval: 1s
+  - interval: 10s
     then:
       - mqtt.publish:
           topic: "tower/1/sensor/solenoid-period"
           payload: !lambda |-
-            return to_string(id(solenoid_period));
+            return to_string(id(solenoid_period_s));
       - mqtt.publish:
           topic: "tower/1/sensor/solenoid-duty-cycle"
           payload: !lambda |-
@@ -169,6 +201,16 @@ interval:
           topic: "tower/1/sensor/pump-power"
           payload: !lambda |-
             return id(pump_power) ? "on" : "off";
+  - interval: 30s
+    then:
+      - if:
+          condition:
+            lambda: |-
+              return id(pump_power) && !id(solenoid_cycle).is_running();
+          then:
+            - logger.log: "Watchdog: restarting solenoid cycle"
+            - script.execute: solenoid_cycle
+
           
 
     
