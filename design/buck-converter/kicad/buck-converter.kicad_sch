@@ -664,36 +664,32 @@
 			)
 			(embedded_fonts no)
 		)
-		(symbol "Device:R_Trim"
-			(pin_numbers
-				(hide yes)
-			)
+		(symbol "Device:R_Potentiometer_Trim"
 			(pin_names
-				(offset 0)
+				(offset 1.016)
+				(hide yes)
 			)
 			(exclude_from_sim no)
 			(in_bom yes)
 			(on_board yes)
-			(property "Reference" "R"
-				(at 2.54 -2.54 90)
+			(property "Reference" "RV"
+				(at -4.445 0 90)
 				(effects
 					(font
 						(size 1.27 1.27)
 					)
-					(justify left)
 				)
 			)
-			(property "Value" "R_Trim"
-				(at -2.54 -0.635 90)
+			(property "Value" "R_Potentiometer_Trim"
+				(at -2.54 0 90)
 				(effects
 					(font
 						(size 1.27 1.27)
 					)
-					(justify left)
 				)
 			)
 			(property "Footprint" ""
-				(at -1.778 0 90)
+				(at 0 0 0)
 				(effects
 					(font
 						(size 1.27 1.27)
@@ -710,7 +706,7 @@
 					(hide yes)
 				)
 			)
-			(property "Description" "Trimmable resistor (preset resistor)"
+			(property "Description" "Trim-potentiometer"
 				(at 0 0 0)
 				(effects
 					(font
@@ -719,7 +715,7 @@
 					(hide yes)
 				)
 			)
-			(property "ki_keywords" "R res resistor variable potentiometer trimmer"
+			(property "ki_keywords" "resistor variable trimpot trimmer"
 				(at 0 0 0)
 				(effects
 					(font
@@ -728,7 +724,7 @@
 					(hide yes)
 				)
 			)
-			(property "ki_fp_filters" "R_*"
+			(property "ki_fp_filters" "Potentiometer*"
 				(at 0 0 0)
 				(effects
 					(font
@@ -737,10 +733,21 @@
 					(hide yes)
 				)
 			)
-			(symbol "R_Trim_0_1"
+			(symbol "R_Potentiometer_Trim_0_1"
+				(rectangle
+					(start 1.016 2.54)
+					(end -1.016 -2.54)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
 				(polyline
 					(pts
-						(xy -1.905 -1.905) (xy 1.905 1.905) (xy 2.54 1.27) (xy 1.27 2.54)
+						(xy 1.524 0.762) (xy 1.524 -0.762)
 					)
 					(stroke
 						(width 0)
@@ -750,11 +757,12 @@
 						(type none)
 					)
 				)
-				(rectangle
-					(start -1.016 -2.54)
-					(end 1.016 2.54)
+				(polyline
+					(pts
+						(xy 2.54 0) (xy 1.524 0)
+					)
 					(stroke
-						(width 0.254)
+						(width 0)
 						(type default)
 					)
 					(fill
@@ -762,11 +770,11 @@
 					)
 				)
 			)
-			(symbol "R_Trim_1_1"
+			(symbol "R_Potentiometer_Trim_1_1"
 				(pin passive line
 					(at 0 3.81 270)
 					(length 1.27)
-					(name "~"
+					(name "1"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -784,7 +792,25 @@
 				(pin passive line
 					(at 0 -3.81 90)
 					(length 1.27)
-					(name "~"
+					(name "3"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "3"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 3.81 0 180)
+					(length 1.27)
+					(name "2"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -1099,12 +1125,6 @@
 		(uuid "519fb92a-24ad-4f2d-8912-037850c32268")
 	)
 	(junction
-		(at 149.86 74.93)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "7b4efa22-3a65-4018-9ce0-b118d6efe4f5")
-	)
-	(junction
 		(at 133.35 74.93)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -1115,6 +1135,20 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "c078c280-4224-48eb-8b60-a09852c375f2")
+	)
+	(junction
+		(at 153.67 74.93)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "e493e1be-d620-4019-a400-efeb8315814c")
+	)
+	(no_connect
+		(at 146.05 77.47)
+		(uuid "3e82da06-5094-43af-aac8-429eabea8fca")
+	)
+	(no_connect
+		(at 153.67 91.44)
+		(uuid "571cf915-bcf1-46f0-a972-54934b2fbece")
 	)
 	(wire
 		(pts
@@ -1148,7 +1182,27 @@
 	)
 	(wire
 		(pts
-			(xy 149.86 83.82) (xy 149.86 86.36)
+			(xy 153.67 74.93) (xy 153.67 77.47)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "0d954c28-b99e-4e36-9fdf-48c1104954a2")
+	)
+	(wire
+		(pts
+			(xy 153.67 74.93) (xy 160.02 74.93)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "15357311-8c63-472c-be68-2129beb02267")
+	)
+	(wire
+		(pts
+			(xy 149.86 83.82) (xy 149.86 87.63)
 		)
 		(stroke
 			(width 0)
@@ -1175,6 +1229,16 @@
 			(type default)
 		)
 		(uuid "1e4b3025-09de-4619-83f2-9bf3d1abb408")
+	)
+	(wire
+		(pts
+			(xy 144.78 91.44) (xy 146.05 91.44)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "245d9772-06d8-4195-9d79-66c87bac3ac8")
 	)
 	(wire
 		(pts
@@ -1208,16 +1272,6 @@
 	)
 	(wire
 		(pts
-			(xy 149.86 82.55) (xy 149.86 83.82)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "57561778-8fe1-41f9-b582-524e35b64771")
-	)
-	(wire
-		(pts
 			(xy 81.28 96.52) (xy 81.28 74.93)
 		)
 		(stroke
@@ -1228,7 +1282,7 @@
 	)
 	(wire
 		(pts
-			(xy 149.86 74.93) (xy 160.02 74.93)
+			(xy 133.35 74.93) (xy 153.67 74.93)
 		)
 		(stroke
 			(width 0)
@@ -1265,6 +1319,16 @@
 			(type default)
 		)
 		(uuid "781e0f84-9dd1-4507-b586-29f48e472ea5")
+	)
+	(wire
+		(pts
+			(xy 149.86 81.28) (xy 149.86 83.82)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "96659185-720a-42b8-b4e5-e7e95b95c966")
 	)
 	(wire
 		(pts
@@ -1318,17 +1382,7 @@
 	)
 	(wire
 		(pts
-			(xy 133.35 74.93) (xy 149.86 74.93)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "bd542e52-36e7-4fa6-8fd6-38f33a6f4920")
-	)
-	(wire
-		(pts
-			(xy 149.86 93.98) (xy 149.86 96.52)
+			(xy 144.78 91.44) (xy 144.78 96.52)
 		)
 		(stroke
 			(width 0)
@@ -1434,7 +1488,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "aeroponics:TPME158K004R0015"
 			(at 134.3152 83.82 0)
 			(effects
 				(font
@@ -1543,17 +1597,87 @@
 		)
 	)
 	(symbol
-		(lib_id "power:GND")
-		(at 149.86 96.52 0)
+		(lib_id "Device:R_Potentiometer_Trim")
+		(at 149.86 77.47 270)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
 		(fields_autoplaced yes)
+		(uuid "063128b5-5805-4eb6-a2cd-4f9744fca403")
+		(property "Reference" "RV1"
+			(at 149.86 71.12 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "R_Potentiometer_Trim"
+			(at 149.86 73.66 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Potentiometer_SMD:Potentiometer_Bourns_3314J_Vertical"
+			(at 149.86 77.47 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 149.86 77.47 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Trim-potentiometer"
+			(at 149.86 77.47 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "2eb4e029-b002-45e6-8201-597b7833468b")
+		)
+		(pin "3"
+			(uuid "5520e708-30c5-4437-9767-20894f32922e")
+		)
+		(pin "1"
+			(uuid "2e965b44-436a-4c35-ae2b-332d57c6a246")
+		)
+		(instances
+			(project ""
+				(path "/e8b56bf9-cd63-4089-bbee-3a72a58994e0"
+					(reference "RV1")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 144.78 96.52 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
 		(uuid "2d5c7fbe-9c35-4648-adab-f9050487784c")
 		(property "Reference" "#PWR07"
-			(at 149.86 102.87 0)
+			(at 144.78 102.87 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1562,7 +1686,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 149.86 101.6 0)
+			(at 144.78 101.6 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1570,7 +1694,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 149.86 96.52 0)
+			(at 144.78 96.52 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1579,7 +1703,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 149.86 96.52 0)
+			(at 144.78 96.52 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1588,7 +1712,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 149.86 96.52 0)
+			(at 144.78 96.52 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1603,6 +1727,76 @@
 			(project "buck-converter"
 				(path "/e8b56bf9-cd63-4089-bbee-3a72a58994e0"
 					(reference "#PWR07")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R_Potentiometer_Trim")
+		(at 149.86 91.44 90)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "321dac63-ee77-407d-b4cb-5786bd8d4f42")
+		(property "Reference" "RV2"
+			(at 159.004 93.472 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "R_Potentiometer_Trim"
+			(at 159.004 96.012 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Potentiometer_SMD:Potentiometer_Bourns_3314J_Vertical"
+			(at 149.86 91.44 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 149.86 91.44 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Trim-potentiometer"
+			(at 149.86 91.44 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "cecc11d2-c66e-4e35-8ac3-16ccb98c5c5b")
+		)
+		(pin "3"
+			(uuid "6bcc75df-b4e0-474a-9bd3-55028e06b24e")
+		)
+		(pin "1"
+			(uuid "6cde609c-d8d1-420d-973a-68c3164bd0f9")
+		)
+		(instances
+			(project "buck-converter"
+				(path "/e8b56bf9-cd63-4089-bbee-3a72a58994e0"
+					(reference "RV2")
 					(unit 1)
 				)
 			)
@@ -1634,7 +1828,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "aeroponics:terminal-block-2-pole-TB006-508-02BE"
 			(at 44.45 72.39 0)
 			(effects
 				(font
@@ -1671,76 +1865,6 @@
 			(project ""
 				(path "/e8b56bf9-cd63-4089-bbee-3a72a58994e0"
 					(reference "J1")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Device:R_Trim")
-		(at 149.86 90.17 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "481b3b85-6ea6-41e0-97f5-ac7cb4cdf4d1")
-		(property "Reference" "R1"
-			(at 153.67 88.8999 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "R_Trim"
-			(at 153.67 91.4399 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" ""
-			(at 148.082 90.17 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 149.86 90.17 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Trimmable resistor (preset resistor)"
-			(at 149.86 90.17 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "2e728fd5-5288-41b1-bbc2-b5d07a198017")
-		)
-		(pin "2"
-			(uuid "9f487412-6fb4-4bc9-978d-27c76fe1a85c")
-		)
-		(instances
-			(project "buck-converter"
-				(path "/e8b56bf9-cd63-4089-bbee-3a72a58994e0"
-					(reference "R1")
 					(unit 1)
 				)
 			)
@@ -1840,7 +1964,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "aeroponics:TPME158K004R0015"
 			(at 67.0052 80.01 0)
 			(effects
 				(font
@@ -1910,7 +2034,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "aeroponics:TPME158K004R0015"
 			(at 160.9852 83.82 0)
 			(effects
 				(font
@@ -2110,7 +2234,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "aeroponics:36561040M101T"
 			(at 123.19 74.93 0)
 			(effects
 				(font
@@ -2246,7 +2370,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "footprints:DIODE_SMC_7P15X6P25_ONS"
+		(property "Footprint" "aeroponics:MBRS360T3G"
 			(at 114.3 80.01 0)
 			(effects
 				(font
@@ -2545,7 +2669,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "aeroponics:terminal-block-2-pole-TB006-508-02BE"
 			(at 189.23 74.93 0)
 			(effects
 				(font
@@ -2582,76 +2706,6 @@
 			(project "buck-converter"
 				(path "/e8b56bf9-cd63-4089-bbee-3a72a58994e0"
 					(reference "J2")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Device:R_Trim")
-		(at 149.86 78.74 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "e16bc509-8936-4806-825f-fc8b625c1a6f")
-		(property "Reference" "R3"
-			(at 153.67 77.4699 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "R_Trim"
-			(at 153.67 80.0099 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" ""
-			(at 148.082 78.74 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 149.86 78.74 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Trimmable resistor (preset resistor)"
-			(at 149.86 78.74 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "c9dff825-356f-4451-9073-67f70181d8c4")
-		)
-		(pin "2"
-			(uuid "4b324414-98dd-477b-829a-9ec2fc907b65")
-		)
-		(instances
-			(project ""
-				(path "/e8b56bf9-cd63-4089-bbee-3a72a58994e0"
-					(reference "R3")
 					(unit 1)
 				)
 			)
