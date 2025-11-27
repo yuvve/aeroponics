@@ -170,10 +170,19 @@ sensor:
     name: "Water pressure"
     id: water_pressure
     pin: GPIO3
-    update_interval: 10s
-    state_topic: "tower/1/sensor/pressure"
     attenuation: auto
-    # TODO: Add calibration/convertion
+    filters:
+      - multiply: 3.0 # Reverse the voltage divider
+      - lambda: |-
+          const float calibration_offset = 0.483;       
+          float voltage= x;                       
+          float kpa = (voltage - calibration_offset) * 250.0;    
+          float bar = kpa / 100;
+          if (bar < 0) bar = 0;                  
+          return bar;
+    update_interval: 10s
+    state_class: measurement
+    state_topic: "tower/1/sensor/pressure"
 
     # TODO: EC sensor when done
 
