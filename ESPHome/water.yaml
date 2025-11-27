@@ -28,12 +28,19 @@ wifi:
     ssid: "Water Fallback Hotspot"
     password: "nmP5a0yeWf6U"
 
+external_components:
+  - source:
+      type: git
+      url: https://github.com/r0bb10/esphome-dfrobot-ph-meter.git
+      ref: main
+    components: [dfrobot_ph_meter]
+
 globals:
   - id: pump_power
     type: bool
     restore_value: no
     initial_value: "false"
-  
+
   - id: pump_pressure_delay_s
     type: int
     initial_value: "10"
@@ -46,11 +53,11 @@ globals:
   - id: solenoid_duty_cycle
     type: int
     restore_value: yes
-    initial_value: "50"  
-    
+    initial_value: "50"
+
   - id: on_time_ms
     type: int
-  
+
   - id: off_time_ms
     type: int
 
@@ -62,14 +69,14 @@ mqtt:
         - lambda: |-
             id(solenoid_period_s) = atoi(x.c_str());
             ESP_LOGI("solenoid", "Updated period: %d s", id(solenoid_period_s));
-        - script.execute: solenoid_cycle   
+        - script.execute: solenoid_cycle
 
     - topic: tower/1/control/solenoid-duty-cycle
       then:
         - lambda: |-
             id(solenoid_duty_cycle) = atoi(x.c_str());
             ESP_LOGI("solenoid", "Updated duty cycle: %d%%", id(solenoid_duty_cycle));
-        - script.execute: solenoid_cycle   # restart with new settings
+        - script.execute: solenoid_cycle # restart with new settings
 
     - topic: tower/1/control/pump-power
       then:
@@ -104,6 +111,30 @@ mqtt:
               id(solenoid).turn_off();
               id(pump).turn_off();
             }
+
+    - topic: tower/1/control/ph/calibrate-4
+      then:
+        - lambda: |-
+            ESP_LOGI("ph", "MQTT: Calibrate pH 4 requested");
+            id(ph_sensor).calibrate_ph4();
+
+    - topic: tower/1/control/ph/calibrate-7
+      then:
+        - lambda: |-
+            ESP_LOGI("ph", "MQTT: Calibrate pH 7 requested");
+            id(ph_sensor).calibrate_ph7();
+
+    - topic: tower/1/control/ph/calibrate-10
+      then:
+        - lambda: |-
+            ESP_LOGI("ph", "MQTT: Calibrate pH 10 requested");
+            id(ph_sensor).calibrate_ph10();
+
+    - topic: tower/1/control/ph/reset
+      then:
+        - lambda: |-
+            ESP_LOGI("ph", "MQTT: Reset pH calibration requested");
+            id(ph_sensor).reset_calibration();
 
 switch:
   - platform: gpio
@@ -142,11 +173,34 @@ sensor:
     update_interval: 10s
     state_topic: "tower/1/sensor/water-pressure"
     attenuation: auto
-    # Add calibration/convertion
+    # TODO: Add calibration/convertion
+
+    # TODO: EC sensor when done
 
 one_wire:
   - platform: gpio
     pin: GPIO4
+
+dfrobot_ph_meter:
+  id: ph_sensor
+  use_ads1115: false
+  adc_pin: 36
+  update_interval: 10s
+  temperature_sensor: water_temp
+  ph_sensor:
+    name: "pH Sensor"
+    accuracy_decimals: 2
+    on_value:
+      then:
+        - mqtt.publish:
+            topic: "tower/1/sensor/ph"
+            payload: !lambda |-
+              return to_string(x);
+  calibration_mode:
+    name: "pH Calibration Mode"
+  # Noise reduction settings
+  smoothing_alpha: 0.2 # Default: 0.2 (range 0.01-1.0, lower = more smoothing
+  median_samples: 5 # Default: 5 (range 1-10, higher = better noise rejection)
 
 script:
   - id: solenoid_cycle
@@ -210,7 +264,3 @@ interval:
           then:
             - logger.log: "Watchdog: restarting solenoid cycle"
             - script.execute: solenoid_cycle
-
-          
-
-    
