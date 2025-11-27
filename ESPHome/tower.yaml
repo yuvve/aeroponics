@@ -28,20 +28,37 @@ wifi:
     ssid: "Tower Fallback Hotspot"
     password: "lM7j3bhh7sq0"
 
+mqtt:
+  broker: !secret mqtt_broker_ip_address
+
 sensor:
   - platform: dallas_temp
     address: 0x6e00000ff96afe28 # GPIO4
-    name: "Tower temperature"
+    name: "Temperature "
     id: tower_temp
     update_interval: 10s
     state_class: measurement
     state_topic: "tower/1/sensor/temp-tower"
 
-  - platform: adc
+  - platform: pulse_counter
     name: "Humidity"
     id: humidity
-    pin: GPIO3
+    pin:
+      number: GPIO1
+      mode:
+        input: true
+        pullup: false
+    count_mode:
+      rising_edge: INCREMENT
+      falling_edge: DISABLE
     update_interval: 10s
+    unit_of_measurement: "Hz"
+    accuracy_decimals: 2
+    filters:
+      - multiply: 0.0166667 # Convert to Hz: 1/60.
+    state_class: measurement
     state_topic: "tower/1/sensor/humidity"
-    attenuation: auto
-    # Add calibration/convertion
+
+one_wire:
+  - platform: gpio
+    pin: GPIO4
