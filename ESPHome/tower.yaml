@@ -28,5 +28,20 @@ wifi:
     ssid: "Tower Fallback Hotspot"
     password: "lM7j3bhh7sq0"
 
-captive_portal:
-    
+sensor:
+  - platform: dallas_temp
+    address: 0x6e00000ff96afe28 # GPIO4
+    name: "Tower temperature"
+    id: tower_temp
+    update_interval: 10s
+    state_class: measurement
+    state_topic: "tower/1/sensor/temp-tower"
+
+  - platform: adc
+    name: "Humidity"
+    id: humidity
+    pin: GPIO3
+    update_interval: 10s
+    state_topic: "tower/1/sensor/humidity"
+    attenuation: auto
+    # Add calibration/convertion
