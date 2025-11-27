@@ -171,7 +171,7 @@ sensor:
     id: water_pressure
     pin: GPIO3
     update_interval: 10s
-    state_topic: "tower/1/sensor/water-pressure"
+    state_topic: "tower/1/sensor/pressure"
     attenuation: auto
     # TODO: Add calibration/convertion
 

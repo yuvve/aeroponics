@@ -1,25 +1,27 @@
 version: 1
 things:
-  mqtt:topic:tower-1-upper-temp:
-    label: Tower 1 Temp (Upper)
+  mqtt:topic:tower-1-temp:
+    label: Tower 1 Temperature
     bridge: mqtt:broker:mosquitto
     channels:
-      tower-1-upper-temp:
+      tower-1-temp:
         type: number
         label: Temperature
         kind: state
         config:
-          stateTopic: tower/1/sensor/temp-upper
-  mqtt:topic:tower-1-upper-humidity:
-    label: Tower 1 Humidity (Upper)
+          stateTopic: tower/1/sensor/temp-tower
+
+  mqtt:topic:tower-1-humidity:
+    label: Tower 1 Humidity
     bridge: mqtt:broker:mosquitto
     channels:
-      tower-1-upper-humidity:
+      tower-1-humidity:
         type: number
         label: Humidity
         kind: state
         config:
-          stateTopic: tower/1/sensor/humidity-upper
+          stateTopic: tower/1/sensor/humidity
+
   mqtt:topic:tower-1-light:
     label: Tower 1 Light
     bridge: mqtt:broker:mosquitto
@@ -31,8 +33,9 @@ things:
         config:
           stateTopic: tower/1/sensor/light
           commandTopic: tower/1/control/light
-          on: "ON"
-          off: "OFF"
+          on: "on"
+          off: "off"
+
   mqtt:topic:tower-1-ec:
     label: Tower 1 EC
     bridge: mqtt:broker:mosquitto
@@ -43,6 +46,7 @@ things:
         kind: state
         config:
           stateTopic: tower/1/sensor/ec
+
   mqtt:topic:tower-1-water-level:
     label: Tower 1 Water Level
     bridge: mqtt:broker:mosquitto
@@ -53,16 +57,57 @@ things:
         kind: state
         config:
           stateTopic: tower/1/sensor/water-level
+
+  mqtt:topic:tower-1-water-temp:
+    label: Tower 1 Water Temperature
+    bridge: mqtt:broker:mosquitto
+    channels:
+      tower-1-water-temp:
+        type: number
+        label: Water Temperature
+        kind: state
+        config:
+          stateTopic: tower/1/sensor/temp-water
+
   mqtt:topic:tower-1-ph:
     label: Tower 1 pH Level
     bridge: mqtt:broker:mosquitto
     channels:
       tower-1-ph:
         type: number
-        label: pH Level
+        label: pH Value
         kind: state
         config:
-          stateTopic: tower/1/sensor/pH
+          stateTopic: tower/1/sensor/ph
+
+      tower-1-ph-calibrate-4:
+        type: string
+        label: Calibrate pH 4
+        kind: command
+        config:
+          commandTopic: tower/1/control/ph/calibrate-4
+
+      tower-1-ph-calibrate-7:
+        type: string
+        label: Calibrate pH 7
+        kind: command
+        config:
+          commandTopic: tower/1/control/ph/calibrate-7
+
+      tower-1-ph-calibrate-10:
+        type: string
+        label: Calibrate pH 10
+        kind: command
+        config:
+          commandTopic: tower/1/control/ph/calibrate-10
+
+      tower-1-ph-calibrate-reset:
+        type: string
+        label: Reset pH Calibration
+        kind: command
+        config:
+          commandTopic: tower/1/control/ph/reset
+
   mqtt:topic:tower-1-pressure:
     label: Tower 1 Pressure
     bridge: mqtt:broker:mosquitto
@@ -73,6 +118,7 @@ things:
         kind: state
         config:
           stateTopic: tower/1/sensor/pressure
+
   mqtt:topic:tower-1-solenoid-period:
     label: Tower 1 Pump Solenoid Period
     bridge: mqtt:broker:mosquitto
@@ -84,6 +130,7 @@ things:
         config:
           stateTopic: tower/1/sensor/solenoid-period
           commandTopic: tower/1/control/solenoid-period
+
   mqtt:topic:tower-1-solenoid-duty-cycle:
     label: Tower 1 Pump Solenoid Duty Cycle
     bridge: mqtt:broker:mosquitto
@@ -95,6 +142,7 @@ things:
         config:
           stateTopic: tower/1/sensor/solenoid-duty-cycle
           commandTopic: tower/1/control/solenoid-duty-cycle
+
   mqtt:topic:tower-1-pump-power:
     label: Tower 1 Pump Power
     bridge: mqtt:broker:mosquitto
@@ -106,5 +154,5 @@ things:
         config:
           stateTopic: tower/1/sensor/pump-power
           commandTopic: tower/1/control/pump-power
-          on: "ON"
-          off: "OFF"
+          on: "on"
+          off: "off"

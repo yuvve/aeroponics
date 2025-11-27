@@ -6,20 +6,23 @@ items:
     label: Tower 1
     tags:
       - Location
-  tower_1_upper:
+
+  tower_1_tower:
     type: Group
-    label: Upper
+    label: Tower
     groups:
       - tower_1
     tags:
       - Equipment
-  tower_1_solution:
+
+  tower_1_water:
     type: Group
-    label: Solution Tank
+    label: Water Tank
     groups:
       - tower_1
     tags:
       - Equipment
+
   tower_1_pressure_system:
     type: Group
     label: Pressure System
@@ -27,63 +30,70 @@ items:
       - tower_1
     tags:
       - Equipment
-  tower_1_upper_temp:
+
+  tower_1_temp:
     type: Number
     dimension: Temperature
-    label: Upper Temperature
+    label: Temperature
     icon: temperature
     unit: °C
     groups:
-      - tower_1_upper
+      - tower_1_tower
     tags:
       - Measurement
-      - Temperature
-    channel: mqtt:topic:tower-1-upper-temp:tower-1-upper-temp
-  tower_1_upper_humidity:
+    channel: mqtt:topic:tower-1-temp:tower-1-temp
+
+  tower_1_humidity:
     type: Number
-    dimension: Dimensionless
-    label: Upper Humidity
+    label: Humidity
     icon: humidity
+    unit: \%
     groups:
-      - tower_1_upper
+      - tower_1_tower
     tags:
       - Measurement
-    channel: mqtt:topic:tower-1-upper-humidity:tower-1-upper-humidity
+    channel: mqtt:topic:tower-1-humidity:tower-1-humidity
+
   tower_1_light:
     type: Switch
     label: Light
     icon: lightbulb
     groups:
-      - tower_1_upper
+      - tower_1_tower
     tags:
       - Switch
     channel: mqtt:topic:tower-1-light:tower-1-light
+
   tower_1_ec:
     type: Number
     label: Electrical Conductivity
+    unit: "mS/m"
     channel: mqtt:topic:tower-1-ec:tower-1-ec
+    groups:
+      - tower_1_water
+
   tower_1_ph:
     type: Number
-    dimension: Dimensionless
     label: pH Level
     icon: colorlight
-    unit: one
     groups:
-      - tower_1_solution
+      - tower_1_water
     tags:
       - Measurement
     channel: mqtt:topic:tower-1-ph:tower-1-ph
+
   tower_1_pressure:
     type: Number
     dimension: Pressure
     label: Water Pressure
     icon: pressure
-    unit: hPa
+    unit: bar
     groups:
       - tower_1_pressure_system
     tags:
       - Measurement
     channel: mqtt:topic:tower-1-pressure:tower-1-pressure
+
   tower_1_pump_power:
     type: Switch
     label: Pump Power
@@ -93,17 +103,31 @@ items:
     tags:
       - Switch
     channel: mqtt:topic:tower-1-pump-power:tower-1-pump-power
+
+  tower_1_water_temp:
+    type: Number
+    dimension: Temperature
+    label: Water Temperature
+    icon: temperature
+    unit: °C
+    groups:
+      - tower_1_water
+    tags:
+      - Measurement
+    channel: mqtt:topic:tower-1-water-level:tower-1-water-temp
+
   tower_1_water_level:
     type: Number
     dimension: Length
     label: Water Level
     icon: water
-    unit: m
+    unit: "%"
     groups:
-      - tower_1_solution
+      - tower_1_water
     tags:
       - Measurement
     channel: mqtt:topic:tower-1-water-level:tower-1-water-level
+
   tower_1_solenoid_period:
     type: Number
     label: Solenoid Period
@@ -114,6 +138,7 @@ items:
     tags:
       - Setpoint
     channel: mqtt:topic:tower-1-solenoid-period:tower-1-solenoid-period
+
   tower_1_solenoid_duty_cycle:
     type: Number
     label: Solenoid Duty Cycle
