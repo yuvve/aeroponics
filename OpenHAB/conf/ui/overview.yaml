@@ -17,6 +17,61 @@ blocks:
                   default:
                     - component: oh-label-card
                       config:
+                        item: tower_1_water_level_alert_status
+                        iconUseState: true
+                        trendItem: tower_1_water_level_alert_status
+                        title: Water Level Alert
+                        icon: oh:alarm
+              - component: oh-grid-col
+                config: {}
+                slots:
+                  default:
+                    - component: oh-label-card
+                      config:
+                        item: tower_1_water_pressure_alert_status
+                        icon: oh:alarm
+                        iconUseState: true
+                        title: Water Pressure Alert
+              - component: oh-grid-col
+                config: {}
+                slots:
+                  default:
+                    - component: oh-label-card
+                      config:
+                        item: tower_1_ph_alert_status
+                        icon: oh:alarm
+                        iconUseState: true
+                        title: pH Alert
+              - component: oh-grid-col
+                config: {}
+                slots:
+                  default:
+                    - component: oh-label-card
+                      config:
+                        item: tower_1_ec_alert_status
+                        icon: oh:alarm
+                        iconUseState: true
+                        title: EC Alert
+              - component: oh-grid-col
+                config: {}
+                slots:
+                  default:
+                    - component: oh-label-card
+                      config:
+                        item: tower_1_water_pressure_alert_status
+                        icon: oh:alarm
+                        iconUseState: true
+                        title: Temperature Alert
+        - component: oh-grid-row
+          config: {}
+          slots:
+            default:
+              - component: oh-grid-col
+                config: {}
+                slots:
+                  default:
+                    - component: oh-label-card
+                      config:
                         action: analyzer
                         actionAnalyzerCoordSystem: time
                         actionAnalyzerItems:
@@ -126,6 +181,7 @@ blocks:
                               title: Pump power
                           - component: oh-slider-item
                             config:
+                              item: tower_1_solenoid_period
                               label: true
                               max: 120
                               min: 0
@@ -134,9 +190,9 @@ blocks:
                               step: 1
                               title: Misting Interval (s)
                               unit: s
-                              item: tower_1_solenoid_period
                           - component: oh-slider-item
                             config:
+                              item: tower_1_solenoid_duty_cycle
                               label: true
                               max: 100
                               min: 0
@@ -145,7 +201,6 @@ blocks:
                               step: 1
                               title: Misting Duty Cycle (%)
                               unit: "%"
-                              item: tower_1_solenoid_duty_cycle
               - component: oh-grid-col
                 config: {}
                 slots:
@@ -160,6 +215,7 @@ blocks:
                           - component: oh-toggle-item
                             config:
                               title: Alerts
+                              icon: oh:alarm
                           - component: oh-slider-item
                             config:
                               label: true
@@ -168,8 +224,10 @@ blocks:
                               releaseOnly: true
                               scale: true
                               step: 1
-                              title: Water Level Threshold (%)
+                              title: Lower Water Level Threshold (%)
                               unit: "%"
+                              item: tower_1_low_water_level_alert_setting
+                              icon: oh:settings
                           - component: oh-slider-item
                             config:
                               label: true
@@ -178,31 +236,80 @@ blocks:
                               releaseOnly: true
                               scale: true
                               step: 0.1
-                              title: Water Pressure Threshold (bar)
+                              title: Lower Water Pressure Threshold (bar)
                               unit: bar
+                              item: tower_1_low_water_pressure_alert_setting
+                              icon: oh:settings
                           - component: oh-slider-item
                             config:
                               label: true
-                              max: 2.0
-                              min: 0.1
+                              max: 14
+                              min: 0
                               releaseOnly: true
                               scale: true
                               step: 0.1
-                              title: pH Tolerance
+                              title: Upper pH Alert Threshold
+                              item: tower_1_high_ph_alert_setting
+                              icon: oh:settings
                           - component: oh-slider-item
                             config:
                               label: true
-                              max: 1.0
-                              min: 0.1
+                              max: 14
+                              min: 0
                               releaseOnly: true
                               scale: true
                               step: 0.1
-                              title: EC Tolerance (mS/cm)
-                              unit: "mS/cm"
-        - component: oh-grid-row
-          config: {}
-          slots:
-            default: []
+                              title: Lower pH Alert Threshold
+                              item: tower_1_low_ph_alert_setting
+                              icon: oh:settings
+                          - component: oh-slider-item
+                            config:
+                              label: true
+                              max: 10
+                              min: 0
+                              releaseOnly: true
+                              scale: true
+                              title: Upper EC Alert Threshold (mS/cm)
+                              unit: mS/cm
+                              item: tower_1_high_ec_threshold
+                              icon: oh:settings
+                              step: 0.1
+                          - component: oh-slider-item
+                            config:
+                              label: true
+                              max: 10
+                              min: 0
+                              releaseOnly: true
+                              scale: true
+                              step: 0.1
+                              title: Lower EC Alert Threshold (mS/cm)
+                              unit: mS/cm
+                              item: tower_1_low_ec_threshold
+                              icon: oh:settings
+                          - component: oh-slider-item
+                            config:
+                              label: true
+                              max: 40
+                              releaseOnly: true
+                              scale: true
+                              step: 0.5
+                              title: Upper Temperature Alert Threshold (°C)
+                              item: tower_1_high_temp_threshold
+                              icon: oh:settings
+                              min: 0
+                              unit: °C
+                          - component: oh-slider-item
+                            config:
+                              label: true
+                              max: 40
+                              releaseOnly: true
+                              scale: true
+                              step: 0.5
+                              title: Lower Temperature Alert Threshold (°C)
+                              unit: °C
+                              item: tower_1_low_temp_threshold
+                              icon: oh:settings
+                              min: 0
 masonry: []
 grid: []
 canvas: []
