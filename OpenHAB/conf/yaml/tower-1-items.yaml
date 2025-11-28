@@ -61,7 +61,7 @@ items:
     channel: mqtt:topic:tower-1-light:tower-1-light
   tower_1_ec:
     type: Number
-    dimension: Dimensionless
+    dimension: ElectricalConductivity
     label: Electrical Conductivity
     unit: "mS/cm"
     groups:
@@ -130,3 +130,122 @@ items:
     tags:
       - Setpoint
     channel: mqtt:topic:tower-1-solenoid-duty-cycle:tower-1-solenoid-duty-cycle
+
+  tower_1_low_water_level_alert_setting:
+    type: Number
+    dimension: Dimensionless
+    label: Low Water Level Alert Threshold
+    icon: settings
+    unit: "%"
+    groups:
+      - tower_1_solution
+    tags:
+      - Setpoint
+  tower_1_water_level_alert_status:
+    type: Switch
+    label: Water Level Alert Status
+    icon: alarm
+    groups:
+      - tower_1_solution
+    tags:
+      - Alarm
+  tower_1_low_water_pressure_alert_setting:
+    type: Number
+    dimension: Pressure
+    label: Low Water Pressure Alert Threshold
+    icon: settings
+    unit: bar
+    groups:
+      - tower_1_solution
+    tags:
+      - Setpoint
+  tower_1_water_pressure_alert_status:
+    type: Switch
+    label: Water Pressure Alert Status
+    icon: alarm
+    groups:
+      - tower_1_solution
+    tags:
+      - Alarm
+  tower_1_low_ph_alert_setting:
+    type: Number
+    dimension: Dimensionless
+    label: Low pH Alert Threshold
+    icon: settings
+    groups:
+      - tower_1_solution
+    tags:
+      - Setpoint
+  tower_1_high_ph_alert_setting:
+    type: Number
+    dimension: Dimensionless
+    label: High pH Alert Threshold
+    icon: settings
+    groups:
+      - tower_1_solution
+    tags:
+      - Setpoint
+  tower_1_ph_alert_status:
+    type: Switch
+    label: pH Alert Status
+    icon: alarm
+    groups:
+      - tower_1_solution
+    tags:
+      - Alarm
+  tower_1_low_ec_threshold:
+    type: Number
+    dimension: ElectricalConductivity
+    unit: mS/cm
+    label: Low EC Alert Threshold
+    icon: settings
+    groups:
+      - tower_1_solution
+    tags:
+      - Setpoint
+  tower_1_high_ec_threshold:
+    type: Number
+    dimension: ElectricalConductivity
+    unit: mS/cm
+    label: High EC Alert Threshold
+    icon: settings
+    groups:
+      - tower_1_solution
+    tags:
+      - Setpoint
+  tower_1_ec_alert_status:
+    type: Switch
+    label: pH Alert Status
+    icon: alarm
+    groups:
+      - tower_1_solution
+    tags:
+      - Alarm
+  tower_1_low_temp_threshold:
+    type: Number
+    dimension: Temperature
+    unit: °C
+    label: Low Temperature Alert Threshold
+    icon: settings
+    groups:
+      - tower_1_upper
+    tags:
+      - Setpoint
+  tower_1_high_temp_threshold:
+    type: Number
+    dimension: Temperature
+    unit: °C
+    label: High Temperature Alert Threshold
+    icon: settings
+    groups:
+      - tower_1_upper
+    tags:
+      - Setpoint
+  tower_1_temp_alert_status:
+    type: Switch
+    label: Temperature Alert Status
+    icon: alarm
+    groups:
+      - tower_1_upper
+    tags:
+      - Alarm
