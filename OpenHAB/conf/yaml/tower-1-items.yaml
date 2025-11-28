@@ -215,7 +215,7 @@ items:
       - Setpoint
   tower_1_ec_alert_status:
     type: Switch
-    label: pH Alert Status
+    label: EC Alert Status
     icon: alarm
     groups:
       - tower_1_solution
