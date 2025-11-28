@@ -195,7 +195,7 @@ items:
       - Alarm
   tower_1_low_ec_threshold:
     type: Number
-    dimension: ElectricalConductivity
+    dimension: ElectricConductivity
     unit: mS/cm
     label: Low EC Alert Threshold
     icon: settings
@@ -205,7 +205,7 @@ items:
       - Setpoint
   tower_1_high_ec_threshold:
     type: Number
-    dimension: ElectricalConductivity
+    dimension: ElectricConductivity
     unit: mS/cm
     label: High EC Alert Threshold
     icon: settings
