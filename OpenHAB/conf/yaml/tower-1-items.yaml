@@ -44,6 +44,7 @@ items:
     dimension: Dimensionless
     label: Upper Humidity
     icon: humidity
+    unit: "%"
     groups:
       - tower_1_upper
     tags:
@@ -60,14 +61,19 @@ items:
     channel: mqtt:topic:tower-1-light:tower-1-light
   tower_1_ec:
     type: Number
+    dimension: Dimensionless
     label: Electrical Conductivity
+    unit: "mS/cm"
+    groups:
+      - tower_1_solution
+    tags:
+      - Measurement
     channel: mqtt:topic:tower-1-ec:tower-1-ec
   tower_1_ph:
     type: Number
     dimension: Dimensionless
     label: pH Level
     icon: colorlight
-    unit: one
     groups:
       - tower_1_solution
     tags:
@@ -78,7 +84,7 @@ items:
     dimension: Pressure
     label: Water Pressure
     icon: pressure
-    unit: hPa
+    unit: bar
     groups:
       - tower_1_pressure_system
     tags:
@@ -95,10 +101,10 @@ items:
     channel: mqtt:topic:tower-1-pump-power:tower-1-pump-power
   tower_1_water_level:
     type: Number
-    dimension: Length
+    dimension: Dimensionless
     label: Water Level
     icon: water
-    unit: m
+    unit: "%"
     groups:
       - tower_1_solution
     tags:

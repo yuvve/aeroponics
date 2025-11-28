@@ -1,0 +1,208 @@
+config:
+  label: Overview
+  sidebar: true
+blocks:
+  - component: oh-block
+    config:
+      title: Tower 1
+    slots:
+      default:
+        - component: oh-grid-row
+          config: {}
+          slots:
+            default:
+              - component: oh-grid-col
+                config: {}
+                slots:
+                  default:
+                    - component: oh-label-card
+                      config:
+                        action: analyzer
+                        actionAnalyzerCoordSystem: time
+                        actionAnalyzerItems:
+                          - tower_1_upper_temp
+                        iconUseState: false
+                        item: tower_1_upper_temp
+                        label: =items.tower_1_upper_temp.state
+                        title: Temperature
+                        trendItem: tower_1_upper_temp
+              - component: oh-grid-col
+                config: {}
+                slots:
+                  default:
+                    - component: oh-label-card
+                      config:
+                        action: analyzer
+                        actionAnalyzerCoordSystem: time
+                        actionAnalyzerItems:
+                          - tower_1_upper_humidity
+                        iconUseState: false
+                        item: tower_1_upper_humidity
+                        label: =items.tower_1_upper_humidity.state
+                        title: Humidity
+                        trendItem: tower_1_upper_humidity
+        - component: oh-grid-row
+          config: {}
+          slots:
+            default:
+              - component: oh-grid-col
+                config: {}
+                slots:
+                  default:
+                    - component: oh-label-card
+                      config:
+                        action: analyzer
+                        actionAnalyzerCoordSystem: time
+                        actionAnalyzerItems:
+                          - tower_1_ec
+                        iconUseState: false
+                        item: tower_1_ec
+                        label: =items.tower_1_ec.state
+                        title: EC
+                        trendItem: tower_1_ec
+              - component: oh-grid-col
+                config: {}
+                slots:
+                  default:
+                    - component: oh-label-card
+                      config:
+                        action: analyzer
+                        actionAnalyzerCoordSystem: time
+                        actionAnalyzerItems:
+                          - tower_1_ph
+                        iconUseState: false
+                        item: tower_1_ph
+                        label: =items.tower_1_ph.state
+                        title: pH
+                        trendItem: tower_1_ph
+              - component: oh-grid-col
+                config: {}
+                slots:
+                  default:
+                    - component: oh-label-card
+                      config:
+                        action: analyzer
+                        actionAnalyzerCoordSystem: time
+                        actionAnalyzerItems:
+                          - tower_1_pressure
+                        iconUseState: false
+                        item: tower_1_pressure
+                        label: =items.tower_1_pressure.state
+                        title: Water Pressure
+                        trendItem: tower_1_pressure
+              - component: oh-grid-col
+                config: {}
+                slots:
+                  default:
+                    - component: oh-label-card
+                      config:
+                        action: analyzer
+                        actionAnalyzerCoordSystem: time
+                        actionAnalyzerItems:
+                          - tower_1_water_level
+                        iconUseState: false
+                        item: tower_1_water_level
+                        label: =items.tower_1_water_level.state
+                        title: Water Level
+                        trendItem: tower_1_water_level
+        - component: oh-grid-row
+          config: {}
+          slots:
+            default:
+              - component: oh-grid-col
+                config: {}
+                slots:
+                  default:
+                    - component: oh-list-card
+                      config:
+                        accordionList: false
+                        simpleList: false
+                        title: System Settings
+                      slots:
+                        default:
+                          - component: oh-toggle-item
+                            config:
+                              item: tower_1_pump_power
+                              title: Pump power
+                          - component: oh-slider-item
+                            config:
+                              label: true
+                              max: 120
+                              min: 0
+                              releaseOnly: true
+                              scale: true
+                              step: 1
+                              title: Misting Interval (s)
+                              unit: s
+                              item: tower_1_solenoid_period
+                          - component: oh-slider-item
+                            config:
+                              label: true
+                              max: 100
+                              min: 0
+                              releaseOnly: true
+                              scale: true
+                              step: 1
+                              title: Misting Duty Cycle (%)
+                              unit: "%"
+                              item: tower_1_solenoid_duty_cycle
+              - component: oh-grid-col
+                config: {}
+                slots:
+                  default:
+                    - component: oh-list-card
+                      config:
+                        accordionList: false
+                        simpleList: false
+                        title: Alert Settings
+                      slots:
+                        default:
+                          - component: oh-toggle-item
+                            config:
+                              title: Alerts
+                          - component: oh-slider-item
+                            config:
+                              label: true
+                              max: 100
+                              min: 0
+                              releaseOnly: true
+                              scale: true
+                              step: 1
+                              title: Water Level Threshold (%)
+                              unit: "%"
+                          - component: oh-slider-item
+                            config:
+                              label: true
+                              max: 10
+                              min: 0
+                              releaseOnly: true
+                              scale: true
+                              step: 0.1
+                              title: Water Pressure Threshold (bar)
+                              unit: bar
+                          - component: oh-slider-item
+                            config:
+                              label: true
+                              max: 2.0
+                              min: 0.1
+                              releaseOnly: true
+                              scale: true
+                              step: 0.1
+                              title: pH Tolerance
+                          - component: oh-slider-item
+                            config:
+                              label: true
+                              max: 1.0
+                              min: 0.1
+                              releaseOnly: true
+                              scale: true
+                              step: 0.1
+                              title: EC Tolerance (mS/cm)
+                              unit: "mS/cm"
+        - component: oh-grid-row
+          config: {}
+          slots:
+            default: []
+masonry: []
+grid: []
+canvas: []
