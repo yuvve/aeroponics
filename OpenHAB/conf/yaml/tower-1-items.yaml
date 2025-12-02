@@ -201,7 +201,7 @@ items:
       - tower_1_solution
     tags:
       - Alarm
-  tower_1_low_ec_threshold:
+  tower_1_low_ec_alert_setting:
     type: Number
     dimension: ElectricConductivity
     unit: mS/cm
@@ -211,7 +211,7 @@ items:
       - tower_1_solution
     tags:
       - Setpoint
-  tower_1_high_ec_threshold:
+  tower_1_high_ec_alert_setting:
     type: Number
     dimension: ElectricConductivity
     unit: mS/cm
@@ -229,7 +229,7 @@ items:
       - tower_1_solution
     tags:
       - Alarm
-  tower_1_low_temp_threshold:
+  tower_1_low_temp_alert_setting:
     type: Number
     dimension: Temperature
     unit: °C
@@ -239,7 +239,7 @@ items:
       - tower_1_upper
     tags:
       - Setpoint
-  tower_1_high_temp_threshold:
+  tower_1_high_temp_alert_setting:
     type: Number
     dimension: Temperature
     unit: °C
