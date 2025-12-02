@@ -131,6 +131,14 @@ items:
       - Setpoint
     channel: mqtt:topic:tower-1-solenoid-duty-cycle:tower-1-solenoid-duty-cycle
 
+  tower_1_alerts_toggle:
+    type: Switch
+    label: Alerts Toggle
+    icon: settings
+    groups:
+      - tower_1
+    tags:
+      - Switch
   tower_1_low_water_level_alert_setting:
     type: Number
     dimension: Dimensionless
