@@ -4,7 +4,7 @@ rules.JSRule({
   triggers: [
     triggers.ItemStateChangeTrigger('tower_1_pressure'),
     triggers.ItemStateChangeTrigger('tower_1_alerts_toggle'),
-    triggers.ItemStateChangeTrigger('tower_1_low_water_pressure'),
+    triggers.ItemStateChangeTrigger('tower_1_low_water_pressure_alert_setting'),
   ],
   execute: () => {
     const alerts_on = items.getItem('tower_1_alerts_toggle').state === 'ON';
