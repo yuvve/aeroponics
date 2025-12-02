@@ -1,5 +1,5 @@
 rules.JSRule({
-  name: "Tower Water Level Alert",
+  name: "Tower 1 Water Level Alert",
   description: "Updates tower_1_water_level_alert_status based on settings",
   triggers: [
     triggers.ItemStateChangeTrigger('tower_1_water_level'),
