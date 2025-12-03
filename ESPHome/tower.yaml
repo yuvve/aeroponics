@@ -34,7 +34,7 @@ mqtt:
 sensor:
   - platform: dallas_temp
     address: 0x6e00000ff96afe28 # GPIO4
-    name: "Temperature "
+    name: "Temperature"
     id: tower_temp
     update_interval: 10s
     state_class: measurement
@@ -44,10 +44,9 @@ sensor:
     name: "Humidity"
     id: humidity
     pin:
-      number: GPIO1
+      number: GPIO2
       mode:
         input: true
-        pullup: false
     count_mode:
       rising_edge: INCREMENT
       falling_edge: DISABLE

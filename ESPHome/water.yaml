@@ -9,6 +9,7 @@ esp32:
 
 # Enable logging
 logger:
+  level: VERBOSE
 
 # Enable Home Assistant API
 api:
@@ -29,10 +30,7 @@ wifi:
     password: "nmP5a0yeWf6U"
 
 external_components:
-  - source:
-      type: git
-      url: https://github.com/r0bb10/esphome-dfrobot-ph-meter.git
-      ref: main
+  - source: "../../ESPHome-DFRobot-pH-Meter/components/"
     components: [dfrobot_ph_meter]
 
 globals:
@@ -99,46 +97,23 @@ mqtt:
               id(pump).turn_off();
             }
 
-    - topic: tower/1/control/ph/calibrate-4
-      then:
-        - lambda: |-
-            ESP_LOGI("ph", "MQTT: Calibrate pH 4 requested");
-            id(ph_sensor).calibrate_ph4();
-
-    - topic: tower/1/control/ph/calibrate-7
-      then:
-        - lambda: |-
-            ESP_LOGI("ph", "MQTT: Calibrate pH 7 requested");
-            id(ph_sensor).calibrate_ph7();
-
-    - topic: tower/1/control/ph/calibrate-10
-      then:
-        - lambda: |-
-            ESP_LOGI("ph", "MQTT: Calibrate pH 10 requested");
-            id(ph_sensor).calibrate_ph10();
-
-    - topic: tower/1/control/ph/reset
-      then:
-        - lambda: |-
-            ESP_LOGI("ph", "MQTT: Reset pH calibration requested");
-            id(ph_sensor).reset_calibration();
-
 switch:
   - platform: gpio
     pin: GPIO21
     id: solenoid
     name: "Solenoid valve relay"
     inverted: True
+
   - platform: gpio
+    pin: GPIO18
     id: pump
     name: "Pump power relay"
-    pin: GPIO18
     inverted: True
 
 sensor:
   - platform: ultrasonic
-    trigger_pin: GPIO1
-    echo_pin: GPIO2
+    trigger_pin: GPIO11
+    echo_pin: GPIO12
     name: "Water level"
     id: water_level
     update_interval: 10s
@@ -156,7 +131,7 @@ sensor:
   - platform: adc
     name: "Water pressure"
     id: water_pressure
-    pin: GPIO5
+    pin: GPIO14
     attenuation: auto
     filters:
       - lambda: |-
@@ -179,20 +154,28 @@ one_wire:
 dfrobot_ph_meter:
   id: ph_sensor
   use_ads1115: false
-  adc_pin: 36
+  adc_pin: 1
   update_interval: 10s
   temperature_sensor: water_temp
+  probe_status_sensor:
+    name: "Probe Status"
+    state_topic: "tower/1/sensor/ph/status"
+  # Optional sensors for diagnostics
+  raw_voltage_sensor:
+    name: "pH Raw Voltage"
+    state_topic: "tower/1/sensor/ph/voltage"
   ph_sensor:
     name: "pH Sensor"
     accuracy_decimals: 2
-    on_value:
-      then:
-        - mqtt.publish:
-            topic: "tower/1/sensor/ph"
-            payload: !lambda |-
-              return to_string(x);
+    state_topic: "tower/1/sensor/ph"
   calibration_mode:
     name: "pH Calibration Mode"
+    state_topic: "tower/1/sensor/ph/calibration"
+    command_topic: "tower/1/control/ph/calibration"
+  # Optional: Custom calibration buffer values
+  ph4_solution: 3.02 # Default: 4.0
+  ph7_solution: 6.86 # Default: 7.0
+  ph10_solution: 9.18 # Default: 10.0
   # Noise reduction settings
   smoothing_alpha: 0.2 # Default: 0.2 (range 0.01-1.0, lower = more smoothing
   median_samples: 5 # Default: 5 (range 1-10, higher = better noise rejection)
