@@ -50,7 +50,7 @@ sensor:
     count_mode:
       rising_edge: INCREMENT
       falling_edge: DISABLE
-    update_interval: 10s
+    update_interval: 1s
     unit_of_measurement: "Hz"
     accuracy_decimals: 2
     filters:
