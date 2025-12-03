@@ -29,63 +29,81 @@ wifi:
     ssid: "Test Fallback Hotspot"
     password: "LI5uj3U6nb90"
 
-external_components:
-  - source: "../../ESPHome-DFRobot-pH-Meter/components/"
-    components: [dfrobot_ph_meter]
-
 globals:
-  - id: pump_power
-    type: bool
-    restore_value: no
-    initial_value: "false"
-
-  - id: pump_pressure_delay_s
-    type: int
-    initial_value: "10"
-
-  - id: solenoid_period_s
-    type: int
+  - id: ph4_voltage
+    type: float
     restore_value: yes
-    initial_value: "30"
+    initial_value: "1268.0"
 
-  - id: solenoid_duty_cycle
-    type: int
+  - id: ph7_voltage
+    type: float
     restore_value: yes
-    initial_value: "50"
+    initial_value: "1650.0"
 
-  - id: on_time_ms
-    type: int
+  - id: ph10_voltage
+    type: float
+    restore_value: yes
+    initial_value: "2032.0"
 
-  - id: off_time_ms
-    type: int
+  - id: water_temp
+    type: float
+    initial_value: "25.0"
 
 mqtt:
   broker: !secret mqtt_broker_ip_address
 
-dfrobot_ph_meter:
-  id: ph_sensor
-  use_ads1115: false
-  adc_pin: 1
-  update_interval: 10s
-  probe_status_sensor:
-    name: "Probe Status"
-    state_topic: "tower/1/sensor/ph/status"
-  # Optional sensors for diagnostics
-  raw_voltage_sensor:
+sensor:
+  - platform: adc
+    id: ph_voltage
     name: "pH Raw Voltage"
-    state_topic: "tower/1/sensor/ph/voltage"
-  ph_sensor:
-    name: "pH Sensor"
+    pin: GPIO2
+    attenuation: auto
+    update_interval: 200ms
+    filters:
+      - multiply: 1000.0 # to mV
+      - median:
+          window_size: 9
+          send_every: 1
+          send_first_at: 1
+      - exponential_moving_average:
+          alpha: 0.1
+          send_every: 1
+
+  - platform: template
+    id: ph
+    name: "pH"
+    unit_of_measurement: "pH"
     accuracy_decimals: 2
+    update_interval: 10s
+    lambda: |-
+      constexpr float KELVIN_OFFSET = 273.15f;
+      constexpr float NERNST_REF_TEMP = 25.0f;
+      float voltage = id(ph_voltage).state;   
+      float ph4_voltage  = id(ph4_voltage);   
+      float ph7_voltage  = id(ph7_voltage);    
+      float ph10_voltage = id(ph10_voltage);    
+      float temp = 25.0f;
+
+      if (id(water_temp).has_state()) // Ensure temp has value
+        temp = id(water_temp).state;
+
+      float temp_factor =
+        (temp + KELVIN_OFFSET) / (NERNST_REF_TEMP + KELVIN_OFFSET);
+
+      float slope;
+      if (voltage< ph7_voltage) {
+        // Acidic side: slope between pH4–7
+        slope = (ph7_voltage - ph4_voltage) / (7.0f - 4.0f);
+      } else {
+        // Alkaline side: slope between pH7–10
+        slope = (ph10_voltage - ph7_voltage) / (10.0f - 7.0f);
+      }
+
+      slope *= temp_factor;
+      float ph = 7.0f + (voltage- ph7_voltage) / slope;
+
+      if (ph < 0.0f) ph = 0.0f;
+      if (ph > 14.0f) ph = 14.0f;
+      return ph;
+    state_class: measurement
     state_topic: "tower/1/sensor/ph"
-  calibration_mode:
-    name: "pH Calibration Mode"
-    state_topic: "tower/1/sensor/ph/calibration"
-    command_topic: "tower/1/control/ph/calibration"
-  # Optional: Custom calibration buffer values
-  ph4_solution: 3.02 # Default: 4.0
-  ph7_solution: 6.86 # Default: 7.0
-  ph10_solution: 9.18 # Default: 10.0
-  # Noise reduction settings
-  smoothing_alpha: 0.2 # Default: 0.2 (range 0.01-1.0, lower = more smoothing
-  median_samples: 5 # Default: 5 (range 1-10, higher = better noise rejection)
