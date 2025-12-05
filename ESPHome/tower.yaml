@@ -19,21 +19,20 @@ ota:
   - platform: esphome
     password: "a9fa30ad806331226649b9b6b50e8602"
 
-wifi:
-  ssid: !secret wifi_ssid
-  password: !secret wifi_password
+globals:
+  - id: calibrated_humidity_10
+    type: float
+    restore_value: yes
+    initial_value: "7155" # Example, add real calibrated values
 
-  # Enable fallback hotspot (captive portal) in case wifi connection fails
-  ap:
-    ssid: "Tower Fallback Hotspot"
-    password: "lM7j3bhh7sq0"
-
-mqtt:
-  broker: !secret mqtt_broker_ip_address
+  - id: calibrated_humidity_90
+    type: float
+    restore_value: yes
+    initial_value: "5200" # Example, add real calibrated values
 
 sensor:
   - platform: dallas_temp
-    address: 0x6e00000ff96afe28 # GPIO4
+    address: 0x7e0000106f420d28 # GPIO4
     name: "Temperature"
     id: tower_temp
     update_interval: 10s
@@ -41,8 +40,8 @@ sensor:
     state_topic: "tower/1/sensor/temp-tower"
 
   - platform: pulse_counter
-    name: "Humidity"
-    id: humidity
+    name: "Pulse counter humidity"
+    id: humidity_freq
     pin:
       number: GPIO2
       mode:
@@ -55,6 +54,27 @@ sensor:
     accuracy_decimals: 2
     filters:
       - multiply: 0.0166667 # Convert to Hz: 1/60.
+    internal: true
+
+  - platform: template
+    id: humidity
+    name: "Humidity"
+    unit_of_measurement: "%"
+    accuracy_decimals: 1
+    update_interval: 10s
+    lambda: |-
+      if (!id(humidity_freq).has_state()) return NAN;
+      float freq = id(humidity_freq).state;
+      float freq_90 = id(calibrated_humidity_90);
+      float freq_10 = id(calibrated_humidity_10);
+
+      float k = (90 - 10) / (freq_90 - freq_10);
+      float m = 10 - (k * freq_10);
+      float humidity = k * freq + m; 
+
+      if (humidity < 0) humidity = 0;
+      if (humidity > 100) humidity = 100;
+      return humidity;
     state_class: measurement
     state_topic: "tower/1/sensor/humidity"
 
