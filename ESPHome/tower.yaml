@@ -2,15 +2,10 @@ esphome:
   name: tower
   friendly_name: tower
 
-esp32:
-  board: esp32-s3-devkitc-1
-  framework:
-    type: esp-idf
+packages:
+  - !include common.yaml
+  - !include pins.yaml
 
-# Enable logging
-logger:
-
-# Enable Home Assistant API
 api:
   encryption:
     key: "T4LeMNpwnkjDXfeiLKw05tPJwd0Npef4LsLY/4LcFfY="
@@ -43,7 +38,7 @@ sensor:
     name: "Pulse counter humidity"
     id: humidity_freq
     pin:
-      number: GPIO2
+      number: ${humidity_pin}
       mode:
         input: true
     count_mode:
@@ -80,4 +75,4 @@ sensor:
 
 one_wire:
   - platform: gpio
-    pin: GPIO4
+    pin: ${tower_temp_pin}

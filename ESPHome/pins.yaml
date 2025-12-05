@@ -1,0 +1,10 @@
+substitutions:
+  tower_temp_pin: GPIO4
+  water_temp_pin: GPIO4
+  water_level_echo_pin: GPIO12
+  water_level_trigger_pin: GPIO11
+  water_pressure_pin: GPIO14
+  ph_pin: GPIO2
+  humidity_pin: GPIO2
+  solenoid_pin: GPIO21
+  pump_pin: GPIO18

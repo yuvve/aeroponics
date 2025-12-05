@@ -2,16 +2,10 @@ esphome:
   name: water
   friendly_name: water
 
-esp32:
-  board: esp32-s3-devkitc-1
-  framework:
-    type: esp-idf
+packages:
+  - !include common.yaml
+  - !include pins.yaml
 
-# Enable logging
-logger:
-  level: VERBOSE
-
-# Enable Home Assistant API
 api:
   encryption:
     key: "wdyJ//Lkrup6TGZeSpISo7hSS+eMIjaa+ps3NeLGnKA="
@@ -19,19 +13,6 @@ api:
 ota:
   - platform: esphome
     password: "4a1d7c64dc75b03445cd863d9cef6672"
-
-wifi:
-  ssid: !secret wifi_ssid
-  password: !secret wifi_password
-
-  # Enable fallback hotspot (captive portal) in case wifi connection fails
-  ap:
-    ssid: "Water Fallback Hotspot"
-    password: "nmP5a0yeWf6U"
-
-external_components:
-  - source: "../../ESPHome-DFRobot-pH-Meter/components/"
-    components: [dfrobot_ph_meter]
 
 globals:
   - id: pump_power
@@ -75,7 +56,6 @@ globals:
     initial_value: "2032.0"
 
 mqtt:
-  broker: !secret mqtt_broker_ip_address
   on_message:
     - topic: tower/1/control/solenoid-period
       then:
@@ -114,21 +94,21 @@ mqtt:
 
 switch:
   - platform: gpio
-    pin: GPIO21
+    pin: ${solenoid_pin}
     id: solenoid
     name: "Solenoid valve relay"
     inverted: True
 
   - platform: gpio
-    pin: GPIO18
+    pin: ${pump_pin}
     id: pump
     name: "Pump power relay"
     inverted: True
 
 sensor:
   - platform: ultrasonic
-    trigger_pin: GPIO11
-    echo_pin: GPIO12
+    trigger_pin: ${water_level_trigger_pin}
+    echo_pin: ${water_level_echo_pin}
     name: "Water level"
     id: water_level
     update_interval: 10s
@@ -146,7 +126,7 @@ sensor:
   - platform: adc
     name: "Water pressure"
     id: water_pressure
-    pin: GPIO14
+    pin: ${water_pressure_pin}
     attenuation: auto
     filters:
       - lambda: |-

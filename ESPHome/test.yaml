@@ -9,7 +9,6 @@ esp32:
 
 # Enable logging
 logger:
-  level: VERBOSE
 
 # Enable Home Assistant API
 api:
@@ -30,17 +29,17 @@ wifi:
     password: "LI5uj3U6nb90"
 
 globals:
-  - id: ph4_voltage
+  - id: ph4_calibration_voltage
     type: float
     restore_value: yes
     initial_value: "1268.0"
 
-  - id: ph7_voltage
+  - id: ph7_calibration_voltage
     type: float
     restore_value: yes
     initial_value: "1650.0"
 
-  - id: ph10_voltage
+  - id: ph10_calibration_voltage
     type: float
     restore_value: yes
     initial_value: "2032.0"
@@ -56,6 +55,7 @@ sensor:
   - platform: adc
     id: ph_voltage
     name: "pH Raw Voltage"
+    unit_of_measurement: "mV"
     pin: GPIO2
     attenuation: auto
     update_interval: 200ms
@@ -68,6 +68,7 @@ sensor:
       - exponential_moving_average:
           alpha: 0.1
           send_every: 1
+    internal: true
 
   - platform: template
     id: ph
@@ -79,28 +80,28 @@ sensor:
       constexpr float KELVIN_OFFSET = 273.15f;
       constexpr float NERNST_REF_TEMP = 25.0f;
       float voltage = id(ph_voltage).state;   
-      float ph4_voltage  = id(ph4_voltage);   
-      float ph7_voltage  = id(ph7_voltage);    
-      float ph10_voltage = id(ph10_voltage);    
+      float ph4_vol  = id(ph4_calibration_voltage);   
+      float ph7_vol  = id(ph7_calibration_voltage);    
+      float ph10_vol = id(ph10_calibration_voltage);    
       float temp = 25.0f;
 
-      if (id(water_temp).has_state()) // Ensure temp has value
-        temp = id(water_temp).state;
+      //if (id(water_temp).has_state()) // Ensure temp has value
+        temp = id(water_temp);
 
       float temp_factor =
         (temp + KELVIN_OFFSET) / (NERNST_REF_TEMP + KELVIN_OFFSET);
 
       float slope;
-      if (voltage< ph7_voltage) {
+      if (voltage< ph7_vol) {
         // Acidic side: slope between pH4–7
-        slope = (ph7_voltage - ph4_voltage) / (7.0f - 4.0f);
+        slope = (ph7_vol - ph4_vol) / (7.0f - 4.0f);
       } else {
         // Alkaline side: slope between pH7–10
-        slope = (ph10_voltage - ph7_voltage) / (10.0f - 7.0f);
+        slope = (ph10_vol - ph7_vol) / (10.0f - 7.0f);
       }
 
       slope *= temp_factor;
-      float ph = 7.0f + (voltage- ph7_voltage) / slope;
+      float ph = 7.0f + (voltage- ph7_vol) / slope;
 
       if (ph < 0.0f) ph = 0.0f;
       if (ph > 14.0f) ph = 14.0f;
