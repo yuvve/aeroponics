@@ -47,7 +47,7 @@ items:
     type: Number
     label: Humidity
     icon: humidity
-    unit: \%
+    unit: "%"
     groups:
       - tower_1_tower
     tags:
@@ -67,7 +67,9 @@ items:
   tower_1_ec:
     type: Number
     label: Electrical Conductivity
-    unit: "mS/m"
+    unit: "mS/cm"
+    tags:
+      - Measurement
     channel: mqtt:topic:tower-1-ec:tower-1-ec
     groups:
       - tower_1_water
@@ -118,7 +120,7 @@ items:
 
   tower_1_water_level:
     type: Number
-    dimension: Length
+    dimension: Dimensionless
     label: Water Level
     icon: water
     unit: "%"
