@@ -1,6 +1,6 @@
 rules.JSRule({
   name: "Tower 1 ec Level Alert",
-  description: "Updates tower_1_ec_level_alert_status based on settings",
+  description: "Updates tower_1_ec_alert_status based on settings",
   triggers: [
     triggers.ItemStateChangeTrigger('tower_1_ec'),
     triggers.ItemStateChangeTrigger('tower_1_alerts_toggle'),
@@ -9,8 +9,8 @@ rules.JSRule({
   ],
   execute: () => {
     const alerts_on = items.getItem('tower_1_alerts_toggle').state === 'ON';
-    const min_ec_level = items.getItem('tower_1_low_ec_level_alert_setting').numericState;
-    const max_ec_level = items.getItem('tower_1_high_ec_level_alert_setting').numericState;
+    const min_ec_level = items.getItem('tower_1_low_ec_alert_setting').numericState;
+    const max_ec_level = items.getItem('tower_1_high_ec_alert_setting').numericState;
     const ec_level = items.getItem('tower_1_ec').numericState;
 
     const alertItem = items.getItem('tower_1_ec_alert_status');

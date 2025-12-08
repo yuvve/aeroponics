@@ -61,7 +61,7 @@ items:
     channel: mqtt:topic:tower-1-light:tower-1-light
   tower_1_ec:
     type: Number
-    dimension: ElectricalConductivity
+    dimension: ElectricConductivity
     label: Electrical Conductivity
     unit: "mS/cm"
     groups:
