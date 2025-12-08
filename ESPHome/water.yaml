@@ -127,6 +127,7 @@ sensor:
     name: "Water pressure"
     id: water_pressure
     pin: ${water_pressure_pin}
+    unit_of_measurement: "bar"
     attenuation: auto
     filters:
       - lambda: |-
