@@ -11,11 +11,11 @@ rules.JSRule({
     const alerts_on = items.getItem('tower_1_alerts_toggle').state === 'ON';
     const min_temp_level = items.getItem('tower_1_low_temp_alert_setting').numericState;
     const max_temp_level = items.getItem('tower_1_high_temp_alert_setting').numericState;
-    const temp_level = items.getItem('tower_1_temp').numericState;
+    const temp_level = items.getItem('tower_1_upper_temp').numericState;
 
     const alertItem = items.getItem('tower_1_temp_alert_status');
 
-    if (alerts_on == 'ON' && (temp_level < min_temp_level || temp_level > max_temp_level)) {
+    if (alerts_on && (temp_level < min_temp_level || temp_level > max_temp_level)) {
       alertItem.postUpdate('ON');
     } else {
       alertItem.postUpdate('OFF');

@@ -15,7 +15,7 @@ rules.JSRule({
 
     const alertItem = items.getItem('tower_1_ec_alert_status');
 
-    if (alerts_on == 'ON' && (ec_level < min_ec_level || ec_level > max_ec_level)) {
+    if (alerts_on && (ec_level < min_ec_level || ec_level > max_ec_level)) {
       alertItem.postUpdate('ON');
     } else {
       alertItem.postUpdate('OFF');

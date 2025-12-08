@@ -15,7 +15,7 @@ rules.JSRule({
 
     const alertItem = items.getItem('tower_1_ph_alert_status');
 
-    if (alerts_on == 'ON' && (ph_level < min_ph_level || ph_level > max_ph_level)) {
+    if (alerts_on && (ph_level < min_ph_level || ph_level > max_ph_level)) {
       alertItem.postUpdate('ON');
     } else {
       alertItem.postUpdate('OFF');
