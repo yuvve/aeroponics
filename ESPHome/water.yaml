@@ -40,20 +40,45 @@ globals:
   - id: off_time_ms
     type: int
 
-  - id: ph4_calibration_voltage
-    type: float
-    restore_value: yes
-    initial_value: "1268.0"
-
-  - id: ph7_calibration_voltage
-    type: float
-    restore_value: yes
-    initial_value: "1650.0"
-
-  - id: ph10_calibration_voltage
+  - id: ph_raw_low
     type: float
     restore_value: yes
     initial_value: "2032.0"
+
+  - id: ph_raw_mid
+    type: float
+    restore_value: yes
+    initial_value: "1552.0"
+
+  - id: ph_raw_high
+    type: float
+    restore_value: yes
+    initial_value: "1154.0"
+
+  - id: ph_ref_low
+    type: float
+    restore_value: yes
+    initial_value: "4.0"
+
+  - id: ph_ref_mid
+    type: float
+    restore_value: yes
+    initial_value: "6.8"
+
+  - id: ph_ref_high
+    type: float
+    restore_value: yes
+    initial_value: "9.2"
+
+  - id: water_level_max
+    type: float
+    restore_value: yes
+    initial_value: "0.38"
+
+  - id: water_level_min
+    type: float
+    restore_value: yes
+    initial_value: "0.163"
 
 mqtt:
   on_message:
@@ -109,9 +134,33 @@ sensor:
   - platform: ultrasonic
     trigger_pin: ${water_level_trigger_pin}
     echo_pin: ${water_level_echo_pin}
+    name: "Water level meter"
+    id: water_level_raw
+    update_interval: 10s
+    internal: true
+
+  - platform: template
     name: "Water level"
     id: water_level
     update_interval: 10s
+    accuracy_decimals: 2
+    unit_of_measurement: "%"
+    lambda: |-
+      float wl_min = id(water_level_min);
+      float wl_max = id(water_level_max);
+      float wl_raw = id(water_level_raw).state;
+
+      float range = wl_max - wl_min;
+      if (range <= 0.0f) {
+        return 0.0f;   // or NAN if you prefer
+      }
+
+      float normalized = (wl_raw - wl_min) / range;
+
+      if (normalized < 0.0f) normalized = 0.0f;
+      if (normalized > 1.0f) normalized = 1.0f;
+
+      return 100.0 - (normalized * 100.0f);
     state_class: measurement
     state_topic: "tower/1/sensor/water-level"
 
@@ -169,9 +218,12 @@ sensor:
       constexpr float KELVIN_OFFSET = 273.15f;
       constexpr float NERNST_REF_TEMP = 25.0f;
       float voltage = id(ph_voltage).state;   
-      float ph4_vol  = id(ph4_calibration_voltage);   
-      float ph7_vol  = id(ph7_calibration_voltage);    
-      float ph10_vol = id(ph10_calibration_voltage);    
+      float raw_low  = id(ph_raw_low);   
+      float raw_mid  = id(ph_raw_mid);    
+      float raw_high = id(ph_raw_high);    
+      float ref_low  = id(ph_ref_low);   
+      float ref_mid  = id(ph_ref_mid);    
+      float ref_high = id(ph_ref_high);    
       float temp = 25.0f;
 
       if (id(water_temp).has_state()) // Ensure temp has value
@@ -181,16 +233,16 @@ sensor:
         (temp + KELVIN_OFFSET) / (NERNST_REF_TEMP + KELVIN_OFFSET);
 
       float slope;
-      if (voltage< ph7_vol) {
+      if (voltage > raw_mid) {
         // Acidic side: slope between pH4–7
-        slope = (ph7_vol - ph4_vol) / (7.0f - 4.0f);
+        slope = (raw_mid - raw_low) / (ref_mid - ref_low);
       } else {
         // Alkaline side: slope between pH7–10
-        slope = (ph10_vol - ph7_vol) / (10.0f - 7.0f);
+        slope = (raw_high - raw_mid) / (ref_high - ref_mid);
       }
 
       slope *= temp_factor;
-      float ph = 7.0f + (voltage- ph7_vol) / slope;
+      float ph = ref_mid + (voltage - raw_mid) / slope;
 
       if (ph < 0.0f) ph = 0.0f;
       if (ph > 14.0f) ph = 14.0f;

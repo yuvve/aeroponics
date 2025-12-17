@@ -15,15 +15,25 @@ ota:
     password: "a9fa30ad806331226649b9b6b50e8602"
 
 globals:
-  - id: calibrated_humidity_10
+  - id: humidity_raw_low
     type: float
     restore_value: yes
-    initial_value: "7155" # Example, add real calibrated values
+    initial_value: "6046"
 
-  - id: calibrated_humidity_90
+  - id: humidity_raw_high
     type: float
     restore_value: yes
-    initial_value: "5200" # Example, add real calibrated values
+    initial_value: "5450" 
+
+  - id: humidity_ref_low
+    type: float
+    restore_value: yes
+    initial_value: "23.87"
+
+  - id: humidity_ref_high
+    type: float
+    restore_value: yes
+    initial_value: "86.5"
 
 sensor:
   - platform: dallas_temp
@@ -60,11 +70,13 @@ sensor:
     lambda: |-
       if (!id(humidity_freq).has_state()) return NAN;
       float freq = id(humidity_freq).state;
-      float freq_90 = id(calibrated_humidity_90);
-      float freq_10 = id(calibrated_humidity_10);
+      float freq_2 = id(humidity_raw_high);
+      float freq_1 = id(humidity_raw_low);
+      float ref_freq_1 = id(humidity_ref_low);
+      float ref_freq_2 = id(humidity_ref_high);
 
-      float k = (90 - 10) / (freq_90 - freq_10);
-      float m = 10 - (k * freq_10);
+      float k = (ref_freq_2 - ref_freq_1) / (freq_2 - freq_1);
+      float m = ref_freq_1 - (k * freq_1);
       float humidity = k * freq + m; 
 
       if (humidity < 0) humidity = 0;
