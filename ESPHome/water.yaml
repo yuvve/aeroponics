@@ -82,40 +82,79 @@ globals:
 
 mqtt:
   on_message:
-    - topic: tower/1/control/solenoid-period
-      then:
-        - lambda: |-
-            id(solenoid_period_s) = atoi(x.c_str());
-            ESP_LOGI("solenoid", "Updated period: %d s", id(solenoid_period_s));
-        - script.execute: solenoid_cycle
+  - topic: "tower/1/control/solenoid-period"
+    then:
+      - lambda: |-
+          std::string s = x;
+          s.erase(0, s.find_first_not_of(" \t\r\n"));
+          s.erase(s.find_last_not_of(" \t\r\n") + 1);
 
-    - topic: tower/1/control/solenoid-duty-cycle
-      then:
-        - lambda: |-
-            id(solenoid_duty_cycle) = atoi(x.c_str());
-            ESP_LOGI("solenoid", "Updated duty cycle: %d%%", id(solenoid_duty_cycle));
-        - script.execute: solenoid_cycle # restart with new settings
-
-    - topic: tower/1/control/pump-power
-      then:
-        - lambda: |-
-            bool new_state = (x == "on");
-
-            if (new_state == id(pump_power)) {
-              ESP_LOGI("pump", "Pump-power command ignored (already %s)", new_state ? "on" : "off");
+          if (s.empty()) {
+            ESP_LOGW("solenoid", "Ignored period update: empty payload");
+            return;
+          }
+          for (char c : s) {
+            if (c < '0' || c > '9') {
+              ESP_LOGW("solenoid", "Ignored period update: non-numeric payload '%s'", s.c_str());
               return;
             }
+          }
 
-            id(pump_power) = new_state;
-            ESP_LOGI("pump", "Pump power changed to: %s", new_state ? "on" : "off");
+          int new_period = atoi(s.c_str());
+          if (new_period < 1) new_period = 1;
+          if (new_period > 3600) new_period = 3600;
 
-            if (new_state) {
-              id(pump_start_sequence).execute();
-            } else {
-              id(solenoid_cycle).stop();
-              id(solenoid).turn_off();
-              id(pump).turn_off();
+          id(solenoid_period_s) = new_period;
+          ESP_LOGI("solenoid", "Updated period: %d s", id(solenoid_period_s));
+      - script.execute: solenoid_cycle
+
+  - topic: "tower/1/control/solenoid-duty-cycle"
+    then:
+      - lambda: |-
+          std::string s = x;
+          s.erase(0, s.find_first_not_of(" \t\r\n"));
+          s.erase(s.find_last_not_of(" \t\r\n") + 1);
+
+          if (s.empty()) {
+            ESP_LOGW("solenoid", "Ignored duty-cycle update: empty payload");
+            return;
+          }
+          for (char c : s) {
+            if (c < '0' || c > '9') {
+              ESP_LOGW("solenoid", "Ignored duty-cycle update: non-numeric payload '%s'", s.c_str());
+              return;
             }
+          }
+
+          int new_duty = atoi(s.c_str());
+          if (new_duty < 0) new_duty = 0;
+          if (new_duty > 100) new_duty = 100;
+
+          id(solenoid_duty_cycle) = new_duty;
+          ESP_LOGI("solenoid", "Updated duty cycle: %d%%", id(solenoid_duty_cycle));
+
+      - script.execute: solenoid_cycle
+        
+  - topic: "tower/1/control/pump-power"
+    then:
+      - lambda: |-
+          bool new_state = (x == "on");
+
+          if (new_state == id(pump_power)) {
+            ESP_LOGI("pump", "Pump-power command ignored (already %s)", new_state ? "on" : "off");
+            return;
+          }
+
+          id(pump_power) = new_state;
+          ESP_LOGI("pump", "Pump power changed to: %s", new_state ? "on" : "off");
+
+          if (new_state) {
+            id(pump_start_sequence).execute();
+          } else {
+            id(solenoid_cycle).stop();
+            id(solenoid).turn_off();
+            id(pump).turn_off();
+          }
 
 switch:
   - platform: gpio
