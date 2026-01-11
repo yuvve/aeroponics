@@ -1,0 +1,369 @@
+esphome:
+  name: water
+  friendly_name: water
+
+packages:
+  - !include common.yaml
+  - !include pins.yaml
+
+api:
+  encryption:
+    key: "wdyJ//Lkrup6TGZeSpISo7hSS+eMIjaa+ps3NeLGnKA="
+
+ota:
+  - platform: esphome
+    password: "4a1d7c64dc75b03445cd863d9cef6672"
+
+globals:
+  - id: pump_power
+    type: bool
+    restore_value: no
+    initial_value: "false"
+
+  - id: pump_pressure_delay_s
+    type: int
+    initial_value: "10"
+
+  - id: solenoid_period_s
+    type: int
+    restore_value: yes
+    initial_value: "30"
+
+  - id: solenoid_duty_cycle
+    type: int
+    restore_value: yes
+    initial_value: "50"
+
+  - id: on_time_ms
+    type: int
+
+  - id: off_time_ms
+    type: int
+
+  - id: ph_raw_low
+    type: float
+    restore_value: yes
+    initial_value: "2032.0"
+
+  - id: ph_raw_mid
+    type: float
+    restore_value: yes
+    initial_value: "1552.0"
+
+  - id: ph_raw_high
+    type: float
+    restore_value: yes
+    initial_value: "1154.0"
+
+  - id: ph_ref_low
+    type: float
+    restore_value: yes
+    initial_value: "4.0"
+
+  - id: ph_ref_mid
+    type: float
+    restore_value: yes
+    initial_value: "6.8"
+
+  - id: ph_ref_high
+    type: float
+    restore_value: yes
+    initial_value: "9.2"
+
+  - id: water_level_max
+    type: float
+    restore_value: yes
+    initial_value: "0.38"
+
+  - id: water_level_min
+    type: float
+    restore_value: yes
+    initial_value: "0.163"
+
+mqtt:
+  on_message:
+  - topic: "tower/1/control/solenoid-period"
+    then:
+      - lambda: |-
+          std::string s = x;
+          s.erase(0, s.find_first_not_of(" \t\r\n"));
+          s.erase(s.find_last_not_of(" \t\r\n") + 1);
+
+          if (s.empty()) {
+            ESP_LOGW("solenoid", "Ignored period update: empty payload");
+            return;
+          }
+          for (char c : s) {
+            if (c < '0' || c > '9') {
+              ESP_LOGW("solenoid", "Ignored period update: non-numeric payload '%s'", s.c_str());
+              return;
+            }
+          }
+
+          int new_period = atoi(s.c_str());
+          if (new_period < 1) new_period = 1;
+          if (new_period > 3600) new_period = 3600;
+
+          id(solenoid_period_s) = new_period;
+          ESP_LOGI("solenoid", "Updated period: %d s", id(solenoid_period_s));
+      - script.execute: solenoid_cycle
+
+  - topic: "tower/1/control/solenoid-duty-cycle"
+    then:
+      - lambda: |-
+          std::string s = x;
+          s.erase(0, s.find_first_not_of(" \t\r\n"));
+          s.erase(s.find_last_not_of(" \t\r\n") + 1);
+
+          if (s.empty()) {
+            ESP_LOGW("solenoid", "Ignored duty-cycle update: empty payload");
+            return;
+          }
+          for (char c : s) {
+            if (c < '0' || c > '9') {
+              ESP_LOGW("solenoid", "Ignored duty-cycle update: non-numeric payload '%s'", s.c_str());
+              return;
+            }
+          }
+
+          int new_duty = atoi(s.c_str());
+          if (new_duty < 0) new_duty = 0;
+          if (new_duty > 100) new_duty = 100;
+
+          id(solenoid_duty_cycle) = new_duty;
+          ESP_LOGI("solenoid", "Updated duty cycle: %d%%", id(solenoid_duty_cycle));
+
+      - script.execute: solenoid_cycle
+        
+  - topic: "tower/1/control/pump-power"
+    then:
+      - lambda: |-
+          bool new_state = (x == "on");
+
+          if (new_state == id(pump_power)) {
+            ESP_LOGI("pump", "Pump-power command ignored (already %s)", new_state ? "on" : "off");
+            return;
+          }
+
+          id(pump_power) = new_state;
+          ESP_LOGI("pump", "Pump power changed to: %s", new_state ? "on" : "off");
+
+          if (new_state) {
+            id(pump_start_sequence).execute();
+          } else {
+            id(solenoid_cycle).stop();
+            id(solenoid).turn_off();
+            id(pump).turn_off();
+          }
+
+switch:
+  - platform: gpio
+    pin: ${solenoid_pin}
+    id: solenoid
+    name: "Solenoid valve relay"
+    inverted: True
+
+  - platform: gpio
+    pin: ${pump_pin}
+    id: pump
+    name: "Pump power relay"
+    inverted: True
+
+sensor:
+  - platform: ultrasonic
+    trigger_pin: ${water_level_trigger_pin}
+    echo_pin: ${water_level_echo_pin}
+    name: "Water level meter"
+    id: water_level_raw
+    update_interval: 10s
+    internal: true
+
+  - platform: template
+    name: "Water level"
+    id: water_level
+    update_interval: 10s
+    accuracy_decimals: 2
+    unit_of_measurement: "%"
+    lambda: |-
+      float wl_min = id(water_level_min);
+      float wl_max = id(water_level_max);
+      float wl_raw = id(water_level_raw).state;
+
+      float range = wl_max - wl_min;
+      if (range <= 0.0f) {
+        return 0.0f;   // or NAN if you prefer
+      }
+
+      float normalized = (wl_raw - wl_min) / range;
+
+      if (normalized < 0.0f) normalized = 0.0f;
+      if (normalized > 1.0f) normalized = 1.0f;
+
+      return 100.0 - (normalized * 100.0f);
+    state_class: measurement
+    state_topic: "tower/1/sensor/water-level"
+
+  - platform: dallas_temp
+    address: 0x6e00000ff96afe28 # GPIO4
+    name: "Water temperature"
+    id: water_temp
+    update_interval: 10s
+    state_class: measurement
+    state_topic: "tower/1/sensor/temp-water"
+
+  - platform: adc
+    name: "Water pressure"
+    id: water_pressure
+    pin: ${water_pressure_pin}
+    unit_of_measurement: "bar"
+    attenuation: auto
+    filters:
+      - lambda: |-
+          const float calibration_offset = 0.49407;       
+          float voltage= x;                       
+          float kpa = (voltage - calibration_offset) * 250.0;    
+          float bar = kpa / 100;
+          if (bar < 0) bar = 0;                  
+          return bar;
+    update_interval: 10s
+    state_class: measurement
+    state_topic: "tower/1/sensor/pressure"
+
+  - platform: adc
+    id: ph_voltage
+    name: "pH Raw Voltage"
+    unit_of_measurement: "mV"
+    pin: ${ph_pin}
+    attenuation: auto
+    update_interval: 1s
+    filters:
+      - multiply: 1000.0 # to mV
+      - median:
+          window_size: 9
+          send_every: 1
+          send_first_at: 1
+      - exponential_moving_average:
+          alpha: 0.1
+          send_every: 1
+    internal: true
+
+  - platform: template
+    id: ph
+    name: "pH"
+    unit_of_measurement: "pH"
+    accuracy_decimals: 2
+    update_interval: 10s
+    lambda: |-
+      constexpr float KELVIN_OFFSET = 273.15f;
+      constexpr float NERNST_REF_TEMP = 25.0f;
+      float voltage = id(ph_voltage).state;   
+      float raw_low  = id(ph_raw_low);   
+      float raw_mid  = id(ph_raw_mid);    
+      float raw_high = id(ph_raw_high);    
+      float ref_low  = id(ph_ref_low);   
+      float ref_mid  = id(ph_ref_mid);    
+      float ref_high = id(ph_ref_high);    
+      float temp = 25.0f;
+
+      if (id(water_temp).has_state()) // Ensure temp has value
+        temp = id(water_temp).state;
+
+      float temp_factor =
+        (temp + KELVIN_OFFSET) / (NERNST_REF_TEMP + KELVIN_OFFSET);
+
+      float slope;
+      if (voltage > raw_mid) {
+        // Acidic side: slope between pH4–7
+        slope = (raw_mid - raw_low) / (ref_mid - ref_low);
+      } else {
+        // Alkaline side: slope between pH7–10
+        slope = (raw_high - raw_mid) / (ref_high - ref_mid);
+      }
+
+      slope *= temp_factor;
+      float ph = ref_mid + (voltage - raw_mid) / slope;
+
+      if (ph < 0.0f) ph = 0.0f;
+      if (ph > 14.0f) ph = 14.0f;
+      return ph;
+    state_class: measurement
+    state_topic: "tower/1/sensor/ph"
+
+    # TODO: EC sensor when done
+
+one_wire:
+  - platform: gpio
+    pin: ${water_temp_pin}
+
+script:
+  - id: solenoid_cycle
+    mode: restart
+    then:
+      - lambda: |-
+          if (!id(pump_power)) {
+            id(solenoid).turn_off();
+            return;
+          }
+      - lambda: |-
+          int period = id(solenoid_period_s);
+          int duty   = id(solenoid_duty_cycle);
+
+          int on_time  = (period * duty) / 100;
+          int off_time = period - on_time;
+
+          id(on_time_ms)  = on_time  * 1000;
+          id(off_time_ms) = off_time * 1000;
+
+          ESP_LOGI("solenoid", "ON: %d ms, OFF: %d ms", id(on_time_ms), id(off_time_ms));
+
+      - switch.turn_on: solenoid
+      - delay: !lambda |-
+          if (!id(pump_power)) return 0; 
+          return id(on_time_ms);
+      - switch.turn_off: solenoid
+      - delay: !lambda |-
+          if (!id(pump_power)) return 0;
+          return id(off_time_ms);
+      - if:
+          condition:
+            lambda: "return id(pump_power);"
+          then:
+            - script.execute: solenoid_cycle
+  - id: pump_start_sequence
+    mode: restart
+    then:
+      - switch.turn_on: pump
+      - delay: !lambda "return id(pump_pressure_delay_s) * 1000;"
+      - if:
+          condition:
+            lambda: "return id(pump_power);"
+          then:
+            - logger.log: "Starting solenoid cycle after pressure delay"
+            - script.execute: solenoid_cycle
+          else:
+            - logger.log: "Pump was turned off during delay; solenoid cycle not started"
+
+interval:
+  - interval: 10s
+    then:
+      - mqtt.publish:
+          topic: "tower/1/sensor/solenoid-period"
+          payload: !lambda |-
+            return to_string(id(solenoid_period_s));
+      - mqtt.publish:
+          topic: "tower/1/sensor/solenoid-duty-cycle"
+          payload: !lambda |-
+            return to_string(id(solenoid_duty_cycle));
+      - mqtt.publish:
+          topic: "tower/1/sensor/pump-power"
+          payload: !lambda |-
+            return id(pump_power) ? "on" : "off";
+  - interval: 30s
+    then:
+      - if:
+          condition:
+            lambda: |-
+              return id(pump_power) && !id(solenoid_cycle).is_running();
+          then:
+            - logger.log: "Watchdog: restarting solenoid cycle"
+            - script.execute: solenoid_cycle
