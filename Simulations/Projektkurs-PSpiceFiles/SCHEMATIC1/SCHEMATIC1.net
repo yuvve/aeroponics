@@ -1,0 +1,62 @@
+* source PROJEKTKURS
+V_Oscillator_V11         0 Oscillator_N25994 12Vdc
+R_Oscillator_R16         N27383 Oscillator_N25914  56k TC=0,0 
+X_Oscillator_U2C         Oscillator_N26132 Oscillator_N25954 Oscillator_N26140
++  Oscillator_N25994 N27383 TL074/301/TI
+R_Oscillator_R18         Oscillator_N26222 N27383  1k TC=0,0 
+R_Oscillator_POT3         Oscillator_N25914 Oscillator_N25954  100k TC=0,0 
+C_Oscillator_C3         0 Oscillator_N26132  15n  TC=0,0 
+X_Oscillator_D3         N27383 Oscillator_N259460 awb1n4733 PARAMS:            
++    
+V_Oscillator_V12         Oscillator_N26140 0 12Vdc
+R_Oscillator_R19         0 Oscillator_N26132  1k TC=0,0 
+R_Oscillator_R17         0 Oscillator_N25954  33k TC=0,0 
+X_Oscillator_D2         Oscillator_N25914 Oscillator_N259460 awb1n4733 PARAMS: 
++               
+C_Oscillator_C2         Oscillator_N26132 Oscillator_N26222  15n  TC=0,0 
+R_Gain_Loop_R4         Gain_Loop_N15008 N26873  1k TC=0,0 
+R_Gain_Loop_R5         0 Gain_Loop_N15008  1k TC=0,0 
+R_Gain_Loop_R2         N27227 Gain_Loop_N14878  1k TC=0,0 
+V_Gain_Loop_V2         Gain_Loop_N14759 0 12Vdc
+R_Gain_Loop_R3         0 Gain_Loop_N14878  1k TC=0,0 
+V_Gain_Loop_V3         0 Gain_Loop_N14983 12Vdc
+X_Gain_Loop_U2         Gain_Loop_N14878 Gain_Loop_N15008 Gain_Loop_N14759
++  Gain_Loop_N14983 N26873 uA741
+V_AC_to_DC_conv_V5         AC_to_DC_conv_N21929 0 12Vdc
+X_AC_to_DC_conv_U1B         N26873 AC_to_DC_conv_N21661 AC_to_DC_conv_N21929
++  AC_to_DC_conv_N21791 AC_to_DC_conv_N21671 TL074/301/TI
+X_AC_to_DC_conv_D1         AC_to_DC_conv_N21697 AC_to_DC_conv_N21671
++  AC_to_DC_conv_N21541 AC_to_DC_conv_N21661 awbmda2500 PARAMS:              
+X_AC_to_DC_conv_U1C         AC_to_DC_conv_N21915 AC_to_DC_conv_N21563
++  AC_to_DC_conv_N21933 AC_to_DC_conv_N21775 N26834 TL074/301/TI
+V_AC_to_DC_conv_V10         0 AC_to_DC_conv_N22179 12Vdc
+V_AC_to_DC_conv_V6         0 AC_to_DC_conv_N21791 12Vdc
+R_AC_to_DC_conv_R8         AC_to_DC_conv_N21563 N26834  220k TC=0,0 
+R_AC_to_DC_conv_R7         AC_to_DC_conv_N21697 AC_to_DC_conv_N21915  220k
++  TC=0,0 
+R_AC_to_DC_conv_R15         AC_to_DC_conv_N22045 AC_to_DC_conv_N22075  100k
++  TC=0,0 
+R_AC_to_DC_conv_R13         AC_to_DC_conv_N21915 AC_to_DC_conv_N22101  100k
++  TC=0,0 
+C_AC_to_DC_conv_C1         AC_to_DC_conv_N21697 AC_to_DC_conv_N21541  220n 
++  TC=0,0 
+R_AC_to_DC_conv_POT1         AC_to_DC_conv_N21491 0  1k TC=0,0 
+V_AC_to_DC_conv_V7         AC_to_DC_conv_N21933 0 12Vdc
+R_AC_to_DC_conv_R14         AC_to_DC_conv_N22179 AC_to_DC_conv_N22189  82k
++  TC=0,0 
+R_AC_to_DC_conv_POT2_1         AC_to_DC_conv_N22101 AC_to_DC_conv_N22075  11k
++  TC=0,0 
+R_AC_to_DC_conv_POT2_2         AC_to_DC_conv_N22189 AC_to_DC_conv_N22101 
++  22k-POT2_1 TC=0,0 
+V_AC_to_DC_conv_V9         AC_to_DC_conv_N22045 0 12Vdc
+R_AC_to_DC_conv_R10         AC_to_DC_conv_N21697 AC_to_DC_conv_N21541  22k
++  TC=0,0 
+R_AC_to_DC_conv_R6         AC_to_DC_conv_N21661 AC_to_DC_conv_N21491  1k TC=0,0
++  
+R_AC_to_DC_conv_R9         AC_to_DC_conv_N21541 AC_to_DC_conv_N21563  220k
++  TC=0,0 
+V_AC_to_DC_conv_V8         0 AC_to_DC_conv_N21775 12Vdc
+R_R1         0 N26834  1Meg TC=0,0 
+V_V1         N27227 0  
++PULSE 0 3.3 0 1n 1n 100u 200u
+R_R2         0 N27383  1Meg TC=0,0 
